@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:dieter/classes/base_page.dart';
+import 'package:dieter/classes/user.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({Key? key, required this.title}) : super(key: key);
+class Profile extends BasePage {
+  const Profile({Key? key, required this.user, required this.setUser})
+      : super(key: key, title: "Profile");
 
-  final String title;
+  final User user;
+  final Function setUser;
 
   @override
-  _ProfileState createState() => _ProfileState();
+  BasePageState createState() => _ProfileState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfileState extends BasePageState<Profile> {
   final ButtonStyle style =
       ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
+
+  void _logout() {
+    widget.setUser(User("", "", "", "", "", "", "", ""));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,21 +32,189 @@ class _ProfileState extends State<Profile> {
           Container(
             margin: const EdgeInsets.only(top: 20),
             child: Row(
-              children: const [
-                Expanded(
+              children: [
+                const Expanded(
                   child: Center(
                     child: Text(
-                      'Name',
+                      'Username',
                       style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
                 Expanded(
                   child: Center(
                     child: Text(
-                      'Thuan Tang',
-                      style: TextStyle(fontSize: 20),
+                      widget.user.username,
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 20),
+            child: Row(
+              children: [
+                const Expanded(
+                  child: Center(
+                    child: Text(
+                      'Email',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      widget.user.email,
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 20),
+            child: Row(
+              children: [
+                const Expanded(
+                  child: Center(
+                    child: Text(
+                      'Height (in.)',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      widget.user.height,
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 20),
+            child: Row(
+              children: [
+                const Expanded(
+                  child: Center(
+                    child: Text(
+                      'Weight (lbs.)',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      widget.user.weight,
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 20),
+            child: Row(
+              children: [
+                const Expanded(
+                  child: Center(
+                    child: Text(
+                      'Sex',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      widget.user.sex,
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 20),
+            child: Row(
+              children: [
+                const Expanded(
+                  child: Center(
+                    child: Text(
+                      'Age',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      widget.user.age,
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 20),
+            child: Row(
+              children: [
+                const Expanded(
+                  child: Center(
+                    child: Text(
+                      'BMI',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      widget.user.bmi,
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 20),
+            child: Row(
+              children: [
+                const Expanded(
+                  child: Center(
+                    child: Text(
+                      'BMR',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      widget.user.bmr,
+                      style: const TextStyle(fontSize: 15),
                     ),
                   ),
                 ),
@@ -48,9 +224,8 @@ class _ProfileState extends State<Profile> {
           const SizedBox(height: 15),
           ElevatedButton(
             style: style,
-            onPressed: null,
+            onPressed: _logout,
             child: const Text('Log out'),
-            onLongPress: () {},
           ),
         ],
       ),

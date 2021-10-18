@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:dieter/classes/base_page.dart';
+import 'package:dieter/classes/user.dart';
 
-class Home extends StatefulWidget {
-  const Home({Key? key, required this.title}) : super(key: key);
+class Home extends BasePage {
+  const Home({Key? key, required this.user}) : super(key: key, title: "Today");
 
-  final String title;
+  final User user;
 
   @override
-  _HomeState createState() => _HomeState();
+  BasePageState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends BasePageState<Home> {
   final List<Map<String, String>> breakfast = [
     {'name': 'Oatmeal', 'calories': '158'},
     {'name': 'Milk', 'calories': '103'},
@@ -33,8 +35,8 @@ class _HomeState extends State<Home> {
           Container(
             margin: const EdgeInsets.only(top: 20),
             child: Row(
-              children: const [
-                Expanded(
+              children: [
+                const Expanded(
                   child: Center(
                     child: Text(
                       'Calories Limit',
@@ -45,7 +47,8 @@ class _HomeState extends State<Home> {
                 ),
                 Expanded(
                   child: Center(
-                    child: Text('1500', style: TextStyle(fontSize: 18)),
+                    child: Text(widget.user.bmr,
+                        style: const TextStyle(fontSize: 18)),
                   ),
                 ),
               ],

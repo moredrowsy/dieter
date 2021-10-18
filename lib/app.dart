@@ -1,8 +1,22 @@
 import 'package:flutter/material.dart';
-import 'routes/navigator.dart';
+import 'package:dieter/classes/user.dart';
+import 'package:dieter/routes/navigator.dart';
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
+
+  @override
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  User user = User("", "", "", "", "", "", "", "");
+
+  void _setUser(User newUser) {
+    setState(() {
+      user = newUser;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,9 +25,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const BottomNavigator(
-        title: 'Dieter',
-      ),
+      home: BottomNavigator(title: 'Dieter', user: user, setUser: _setUser),
     );
   }
 }

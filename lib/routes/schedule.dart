@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:dieter/classes/base_page.dart';
 
-class Schedule extends StatefulWidget {
-  const Schedule({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+class Schedule extends BasePage {
+  const Schedule({Key? key}) : super(key: key, title: "Schedule");
 
   @override
-  _ScheduleState createState() => _ScheduleState();
+  BasePageState createState() => _ScheduleState();
 }
 
-class _ScheduleState extends State<Schedule> {
+class _ScheduleState extends BasePageState<Schedule> {
   final List<Map<String, String>> breakfast = [
     {'name': 'Oatmeal', 'calories': '158'},
     {'name': 'Milk', 'calories': '103'},

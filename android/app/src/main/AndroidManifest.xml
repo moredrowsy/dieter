@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.moredrowsy.dieter">
+    package="com.example.dieter">
    <application
         android:label="dieter"
         android:icon="@mipmap/ic_launcher">
