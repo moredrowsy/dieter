@@ -18,7 +18,7 @@ class _ProfileState extends BasePageState<Profile> {
       ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
 
   void _logout() {
-    widget.setUser(User("", "", "", "", "", "", "", ""));
+    widget.setUser(User());
   }
 
   @override

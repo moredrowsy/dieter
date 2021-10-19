@@ -1,7 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:dieter/classes/base_page.dart';
 import 'package:dieter/classes/user.dart';
@@ -20,6 +16,7 @@ class Signup extends BasePage {
 class _SignupState extends BasePageState<Signup> {
   final userController = TextEditingController();
   final passController = TextEditingController();
+  final emailController = TextEditingController();
   final heightController = TextEditingController();
   final weightController = TextEditingController();
   final sexController = TextEditingController();
@@ -34,6 +31,13 @@ class _SignupState extends BasePageState<Signup> {
       }
       if (passController.text == "") {
         throw Exception("Password can not be empty");
+      }
+      if (emailController.text == "") {
+        throw Exception("Email can not be empty");
+      }
+      if (!emailController.text.contains(RegExp(
+          r"[a-zA-Z0-9!#$%&'*+\-\/=?^_`{|}~\.]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]{2,}"))) {
+        throw Exception("Email must be valid");
       }
       if (heightController.text == "") {
         throw Exception("Height can not be empty");
@@ -65,14 +69,14 @@ class _SignupState extends BasePageState<Signup> {
 
       setState(() {
         User user = User(
-            userController.text,
-            passController.text,
-            heightController.text,
-            weightController.text,
-            sexDropdownValue,
-            ageController.text,
-            "",
-            "");
+          username: userController.text,
+          password: passController.text,
+          email: emailController.text,
+          height: heightController.text,
+          weight: weightController.text,
+          sex: sexDropdownValue,
+          age: ageController.text,
+        );
 
         if (user.bmi == "") {
           // Calculate BMI
@@ -114,14 +118,14 @@ class _SignupState extends BasePageState<Signup> {
             child: Column(
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+                  margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: Text(errorString),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+                  margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: TextField(
                     obscureText: false,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Username',
                     ),
@@ -129,10 +133,10 @@ class _SignupState extends BasePageState<Signup> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+                  margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: TextField(
                     obscureText: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Password',
                     ),
@@ -140,10 +144,21 @@ class _SignupState extends BasePageState<Signup> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+                  margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: TextField(
                     obscureText: false,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Email',
+                    ),
+                    controller: emailController,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
+                  child: TextField(
+                    obscureText: false,
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Height (in.)',
                     ),
@@ -151,10 +166,10 @@ class _SignupState extends BasePageState<Signup> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+                  margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: TextField(
                     obscureText: false,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Weight (lbs.)',
                     ),
@@ -162,10 +177,10 @@ class _SignupState extends BasePageState<Signup> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+                  margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: TextField(
                     obscureText: false,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Age',
                     ),
@@ -173,37 +188,35 @@ class _SignupState extends BasePageState<Signup> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 20, left: 20, right: 20),
-                  child: Expanded(
-                    child: DropdownButton<String>(
-                      value: sexDropdownValue,
-                      icon: const Icon(Icons.arrow_downward),
-                      iconSize: 24,
-                      elevation: 16,
-                      style: const TextStyle(color: Colors.deepPurple),
-                      underline: Container(
-                        height: 2,
-                        color: Colors.deepPurpleAccent,
-                      ),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          sexDropdownValue = newValue!;
-                        });
-                      },
-                      items: <String>[
-                        'male',
-                        'female',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                  margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
+                  child: DropdownButton<String>(
+                    value: sexDropdownValue,
+                    icon: const Icon(Icons.arrow_downward),
+                    iconSize: 24,
+                    elevation: 16,
+                    style: const TextStyle(color: Colors.deepPurple),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.deepPurpleAccent,
                     ),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        sexDropdownValue = newValue!;
+                      });
+                    },
+                    items: <String>[
+                      'male',
+                      'female',
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+                  margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: OutlinedButton(
                     onPressed: _signup,
                     child: const Text('Create'),

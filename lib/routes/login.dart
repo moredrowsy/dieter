@@ -1,7 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'dart:math';
-
 import 'package:dieter/routes/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:dieter/classes/base_page.dart';
@@ -21,8 +17,14 @@ class Login extends BasePage {
 class _LoginState extends BasePageState<Login> {
   final userController = TextEditingController();
   final passController = TextEditingController();
-  final mockuser =
-      User("john", "john@gmail.com", "64", "130", "male", "25", "", "");
+  final mockuser = User(
+      username: "john",
+      password: "test",
+      email: "john@gmail.com",
+      height: "64",
+      weight: "130",
+      sex: "male",
+      age: "25");
 
   @override
   void dispose() {
@@ -33,7 +35,8 @@ class _LoginState extends BasePageState<Login> {
   }
 
   void _login() {
-    if (userController.text == "john" && passController.text == "test") {
+    if (userController.text == mockuser.username &&
+        passController.text == mockuser.password) {
       if (mockuser.bmi == "") {
         // Calculate BMI
         // https://www.cdc.gov/nccdphp/dnpao/growthcharts/training/bmiage/page5_1.html
@@ -79,10 +82,10 @@ class _LoginState extends BasePageState<Login> {
         child: Column(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+              margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
               child: TextField(
                 obscureText: false,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Username',
                 ),
@@ -90,10 +93,10 @@ class _LoginState extends BasePageState<Login> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+              margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
               child: TextField(
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Password',
                 ),
@@ -101,7 +104,8 @@ class _LoginState extends BasePageState<Login> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+              margin: const EdgeInsets.only(
+                  top: 20, bottom: 15, left: 20, right: 20),
               child: OutlinedButton(
                 onPressed: _login,
                 child: const Text('Log in'),

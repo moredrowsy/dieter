@@ -1,23 +1,30 @@
-import 'package:dieter/routes/foods.dart';
-import 'package:dieter/routes/login.dart';
 import 'package:flutter/material.dart';
 import 'package:dieter/classes/user.dart';
+import 'package:dieter/classes/food.dart';
+import 'package:dieter/routes/foods.dart';
+import 'package:dieter/routes/login.dart';
 import 'package:dieter/routes/today.dart';
 import 'package:dieter/routes/schedule.dart';
 import 'package:dieter/routes/profile.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class BottomNavigator extends StatefulWidget {
-  const BottomNavigator(
-      {Key? key,
-      required this.title,
-      required this.user,
-      required this.setUser})
-      : super(key: key);
+  const BottomNavigator({
+    Key? key,
+    required this.title,
+    required this.user,
+    required this.setUser,
+    required this.foods,
+    required this.addFood,
+    required this.removeFood,
+  }) : super(key: key);
 
   final String title;
   final User user;
   final Function setUser;
+  final List<Food> foods;
+  final Function addFood;
+  final Function removeFood;
 
   @override
   _BottomNavigatorState createState() => _BottomNavigatorState();
@@ -39,7 +46,11 @@ class _BottomNavigatorState extends State<BottomNavigator> {
       final List _widgetOptions = [
         Home(user: widget.user),
         const Schedule(),
-        const Foods(),
+        Foods(
+          foods: widget.foods,
+          addFood: widget.addFood,
+          removeFood: widget.removeFood,
+        ),
         Profile(
           user: widget.user,
           setUser: widget.setUser,
