@@ -49,20 +49,23 @@ class _SignupState extends BasePageState<Signup> {
         throw Exception("Age can not be empty");
       }
 
+      double weight = 0;
       try {
-        double.parse(weightController.text);
+        weight = double.parse(weightController.text);
       } catch (e) {
         throw Exception("Weight must be a number");
       }
 
+      double height = 0;
       try {
-        double.parse(heightController.text);
+        height = double.parse(heightController.text);
       } catch (e) {
         throw Exception("Height must be a number");
       }
 
+      int age = 0;
       try {
-        double.parse(ageController.text);
+        age = int.parse(ageController.text);
       } catch (e) {
         throw Exception("Age must be a number");
       }
@@ -72,28 +75,27 @@ class _SignupState extends BasePageState<Signup> {
           username: userController.text,
           password: passController.text,
           email: emailController.text,
-          height: heightController.text,
-          weight: weightController.text,
+          height: height,
+          weight: weight,
           sex: sexDropdownValue,
-          age: ageController.text,
+          age: age,
         );
 
-        if (user.bmi == "") {
+        if (user.bmi == 0) {
           // Calculate BMI
           // https://www.cdc.gov/nccdphp/dnpao/growthcharts/training/bmiage/page5_1.html
           double bmi = getBMI(
-            double.parse(user.height),
-            double.parse(user.weight),
+            user.height,
+            user.weight,
           );
-          user.bmi = bmi.round().toString();
+          user.bmi = bmi.round().toDouble();
         }
 
-        if (user.bmr == "") {
+        if (user.bmr == 0) {
           // Calculate BMR
           // https://www.livestrong.com/article/382462-what-is-bmi-and-bmr/
-          double bmr = getBMR(double.parse(user.height),
-              double.parse(user.weight), double.parse(user.age), user.sex);
-          user.bmr = bmr.round().toString();
+          double bmr = getBMR(user.height, user.weight, user.age, user.sex);
+          user.bmr = bmr.round().toDouble();
         }
 
         widget.setUser(user);

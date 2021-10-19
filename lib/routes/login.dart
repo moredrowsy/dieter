@@ -21,10 +21,10 @@ class _LoginState extends BasePageState<Login> {
       username: "john",
       password: "test",
       email: "john@gmail.com",
-      height: "64",
-      weight: "130",
+      height: 64,
+      weight: 130,
       sex: "male",
-      age: "25");
+      age: 25);
 
   @override
   void dispose() {
@@ -37,25 +37,22 @@ class _LoginState extends BasePageState<Login> {
   void _login() {
     if (userController.text == mockuser.username &&
         passController.text == mockuser.password) {
-      if (mockuser.bmi == "") {
+      if (mockuser.bmi == 0) {
         // Calculate BMI
         // https://www.cdc.gov/nccdphp/dnpao/growthcharts/training/bmiage/page5_1.html
         double bmi = getBMI(
-          double.parse(mockuser.height),
-          double.parse(mockuser.weight),
+          mockuser.height,
+          mockuser.weight,
         );
-        mockuser.bmi = bmi.round().toString();
+        mockuser.bmi = bmi.round().toDouble();
       }
 
-      if (mockuser.bmr == "") {
+      if (mockuser.bmr == 0) {
         // Calculate BMR
         // https://www.livestrong.com/article/382462-what-is-bmi-and-bmr/
         double bmr = getBMR(
-            double.parse(mockuser.height),
-            double.parse(mockuser.weight),
-            double.parse(mockuser.age),
-            mockuser.sex);
-        mockuser.bmr = bmr.round().toString();
+            mockuser.height, mockuser.weight, mockuser.age, mockuser.sex);
+        mockuser.bmr = bmr.round().toDouble();
       }
 
       widget.setUser(mockuser);

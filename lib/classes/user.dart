@@ -2,44 +2,44 @@ class User {
   final String username;
   final String password;
   final String email;
-  String height; // in inches, in
-  String weight; // in pounds, lbs
+  double height; // in inches, in
+  double weight; // in pounds, lbs
   String sex; // male or female
-  String age;
-  String bmi;
-  String bmr;
+  int age;
+  double bmi;
+  double bmr;
 
   User(
       {this.username = "",
       this.password = "",
       this.email = "",
-      this.height = "",
-      this.weight = "",
+      this.height = 0,
+      this.weight = 0,
       this.sex = "",
-      this.age = "",
-      this.bmi = "",
-      this.bmr = ""});
+      this.age = 0,
+      this.bmi = 0,
+      this.bmr = 0});
 
   User.fromJson(Map<String, dynamic> json)
       : username = json['username'],
         password = json['password'],
         email = json['email'],
-        height = json['height'],
-        weight = json['weight'],
+        height = double.parse(json['height']),
+        weight = double.parse(json['weight']),
         sex = json['sex'],
-        age = json['age'],
-        bmi = json['bmi'],
-        bmr = json['bmr'];
+        age = int.parse(json['age']),
+        bmi = double.parse(json['bmi']),
+        bmr = double.parse(json['bmr']);
 
   Map<String, dynamic> toJson() => {
         'username': username,
         'password': password,
         'email': email,
-        'height': height,
-        'weight': weight,
+        'height': height.toString(),
+        'weight': weight.toString(),
         'sex': sex,
-        'age': age,
-        'bmi': bmi,
-        'bmr': bmr,
+        'age': age.toString(),
+        'bmi': bmi.toString(),
+        'bmr': bmr.toString(),
       };
 }

@@ -47,7 +47,7 @@ class _HomeState extends BasePageState<Home> {
                 ),
                 Expanded(
                   child: Center(
-                    child: Text(widget.user.bmr,
+                    child: Text(widget.user.bmr.toString(),
                         style: const TextStyle(fontSize: 18)),
                   ),
                 ),

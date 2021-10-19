@@ -93,7 +93,7 @@ class _ProfileState extends BasePageState<Profile> {
                 Expanded(
                   child: Center(
                     child: Text(
-                      widget.user.height,
+                      widget.user.height.toString(),
                       style: const TextStyle(fontSize: 15),
                     ),
                   ),
@@ -117,7 +117,7 @@ class _ProfileState extends BasePageState<Profile> {
                 Expanded(
                   child: Center(
                     child: Text(
-                      widget.user.weight,
+                      widget.user.weight.toString(),
                       style: const TextStyle(fontSize: 15),
                     ),
                   ),
@@ -165,7 +165,7 @@ class _ProfileState extends BasePageState<Profile> {
                 Expanded(
                   child: Center(
                     child: Text(
-                      widget.user.age,
+                      widget.user.age.toString(),
                       style: const TextStyle(fontSize: 15),
                     ),
                   ),
@@ -189,7 +189,7 @@ class _ProfileState extends BasePageState<Profile> {
                 Expanded(
                   child: Center(
                     child: Text(
-                      widget.user.bmi,
+                      widget.user.bmi.toString(),
                       style: const TextStyle(fontSize: 15),
                     ),
                   ),
@@ -213,7 +213,7 @@ class _ProfileState extends BasePageState<Profile> {
                 Expanded(
                   child: Center(
                     child: Text(
-                      widget.user.bmr,
+                      widget.user.bmr.toString(),
                       style: const TextStyle(fontSize: 15),
                     ),
                   ),

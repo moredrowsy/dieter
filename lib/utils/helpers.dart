@@ -7,7 +7,7 @@ double getBMI(double height, double weight) {
   return bmi;
 }
 
-double getBMR(double height, double weight, double age, String sex) {
+double getBMR(double height, double weight, int age, String sex) {
   // Calculate BMR
   // https://www.livestrong.com/article/382462-what-is-bmi-and-bmr/
   double bmr = 0;
