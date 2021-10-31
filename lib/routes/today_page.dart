@@ -1,11 +1,11 @@
-import 'package:dieter/models/food.dart';
 import 'package:flutter/material.dart';
 import 'package:dieter/classes/base_page.dart';
+import 'package:dieter/models/food.dart';
 import 'package:dieter/models/food_schedule.dart';
 import 'package:dieter/models/user.dart';
 
 class TodayPage extends BasePage {
-  TodayPage({
+  const TodayPage({
     Key? key,
     required this.user,
     required this.todayDate,
@@ -138,6 +138,9 @@ class _TodayPageState extends BasePageState<TodayPage> {
                                         ? TextDecoration.lineThrough
                                         : TextDecoration.none,
                                 fontStyle: FontStyle.italic,
+                                color: todayFoodSchedule.breakfast[index].done
+                                    ? Colors.grey
+                                    : Colors.black,
                               ),
                             ),
                           ),
@@ -151,6 +154,9 @@ class _TodayPageState extends BasePageState<TodayPage> {
                                     todayFoodSchedule.breakfast[index].done
                                         ? TextDecoration.lineThrough
                                         : TextDecoration.none,
+                                color: todayFoodSchedule.breakfast[index].done
+                                    ? Colors.grey
+                                    : Colors.black,
                               ),
                             ),
                           ),
@@ -162,6 +168,9 @@ class _TodayPageState extends BasePageState<TodayPage> {
                                     ? Icons.check_box
                                     : Icons.check_box_outline_blank,
                                 size: 18),
+                            color: todayFoodSchedule.breakfast[index].done
+                                ? Colors.grey
+                                : Colors.black,
                             tooltip: 'Toggle Food Item',
                             padding: EdgeInsets.zero,
                             onPressed: () => toggleFoodItem("breakfast", index,
@@ -199,6 +208,9 @@ class _TodayPageState extends BasePageState<TodayPage> {
                                     ? TextDecoration.lineThrough
                                     : TextDecoration.none,
                                 fontStyle: FontStyle.italic,
+                                color: todayFoodSchedule.lunch[index].done
+                                    ? Colors.grey
+                                    : Colors.black,
                               ),
                             ),
                           ),
@@ -211,6 +223,9 @@ class _TodayPageState extends BasePageState<TodayPage> {
                                 decoration: todayFoodSchedule.lunch[index].done
                                     ? TextDecoration.lineThrough
                                     : TextDecoration.none,
+                                color: todayFoodSchedule.lunch[index].done
+                                    ? Colors.grey
+                                    : Colors.black,
                               ),
                             ),
                           ),
@@ -222,6 +237,9 @@ class _TodayPageState extends BasePageState<TodayPage> {
                                     ? Icons.check_box
                                     : Icons.check_box_outline_blank,
                                 size: 18),
+                            color: todayFoodSchedule.lunch[index].done
+                                ? Colors.grey
+                                : Colors.black,
                             tooltip: 'Toggle Food Item',
                             padding: EdgeInsets.zero,
                             onPressed: () => toggleFoodItem(
@@ -259,6 +277,9 @@ class _TodayPageState extends BasePageState<TodayPage> {
                                     ? TextDecoration.lineThrough
                                     : TextDecoration.none,
                                 fontStyle: FontStyle.italic,
+                                color: todayFoodSchedule.dinner[index].done
+                                    ? Colors.grey
+                                    : Colors.black,
                               ),
                             ),
                           ),
@@ -271,6 +292,9 @@ class _TodayPageState extends BasePageState<TodayPage> {
                                 decoration: todayFoodSchedule.dinner[index].done
                                     ? TextDecoration.lineThrough
                                     : TextDecoration.none,
+                                color: todayFoodSchedule.dinner[index].done
+                                    ? Colors.grey
+                                    : Colors.black,
                               ),
                             ),
                           ),
@@ -282,6 +306,9 @@ class _TodayPageState extends BasePageState<TodayPage> {
                                     ? Icons.check_box
                                     : Icons.check_box_outline_blank,
                                 size: 18),
+                            color: todayFoodSchedule.dinner[index].done
+                                ? Colors.grey
+                                : Colors.black,
                             tooltip: 'Toggle Food Item',
                             padding: EdgeInsets.zero,
                             onPressed: () => toggleFoodItem("dinner", index,

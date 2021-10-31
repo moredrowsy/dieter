@@ -4,7 +4,7 @@ import 'package:dieter/models/user.dart';
 import 'package:dieter/utils/helpers.dart';
 
 class SignupPage extends BasePage {
-  SignupPage({Key? key, required this.setUser})
+  const SignupPage({Key? key, required this.setUser})
       : super(key: key, title: "Signup");
 
   final Function setUser;

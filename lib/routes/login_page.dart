@@ -5,7 +5,7 @@ import 'package:dieter/routes/signup_page.dart';
 import 'package:dieter/utils/helpers.dart';
 
 class LoginPage extends BasePage {
-  LoginPage({Key? key, required this.setUser})
+  const LoginPage({Key? key, required this.setUser})
       : super(key: key, title: "Login");
 
   final Function setUser;

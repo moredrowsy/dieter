@@ -1,3 +1,4 @@
+import 'package:dieter/routes/history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:dieter/models/food.dart';
 import 'package:dieter/models/food_schedule.dart';
@@ -76,6 +77,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
           addFood: widget.addFood,
           removeFood: widget.removeFood,
         ),
+        HistoryPage(user: widget.user, foodHistory: widget.foodHistory),
         ProfilePage(
           user: widget.user,
           setUser: widget.setUser,
@@ -101,8 +103,12 @@ class _BottomNavigatorState extends State<BottomNavigator> {
               label: _widgetOptions[2].title,
             ),
             BottomNavigationBarItem(
-              icon: const Icon(Icons.person),
+              icon: const Icon(Icons.history),
               label: _widgetOptions[3].title,
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.person),
+              label: _widgetOptions[4].title,
             ),
           ],
           currentIndex: _selectedIndex,

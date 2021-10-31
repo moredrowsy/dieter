@@ -3,7 +3,7 @@ import 'package:dieter/classes/base_page.dart';
 import 'package:dieter/models/food.dart';
 
 class FoodsPage extends BasePage {
-  FoodsPage({
+  const FoodsPage({
     Key? key,
     required this.foods,
     required this.addFood,
@@ -93,7 +93,8 @@ class _FoodsPageState extends BasePageState<FoodsPage> {
             ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.only(
+                    top: 8, bottom: 8, right: 8, left: 10),
                 itemCount: widget.foods.length,
                 itemBuilder: (BuildContext context, int index) {
                   return SizedBox(

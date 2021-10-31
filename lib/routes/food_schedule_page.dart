@@ -5,7 +5,7 @@ import 'package:dieter/models/food.dart';
 import 'package:dieter/models/food_schedule.dart';
 
 class FoodSchedulePage extends BasePage {
-  FoodSchedulePage({
+  const FoodSchedulePage({
     Key? key,
     required this.foods,
     required this.foodSchedules,
@@ -65,7 +65,7 @@ class _FoodSchedulePageState extends BasePageState<FoodSchedulePage> {
       body: Column(
         children: <Widget>[
           Container(
-            margin: const EdgeInsets.only(top: 10, left: 5, right: 0),
+            margin: const EdgeInsets.only(top: 10, left: 8, right: 8),
             child: Row(
               children: [
                 Expanded(
@@ -96,6 +96,9 @@ class _FoodSchedulePageState extends BasePageState<FoodSchedulePage> {
           ),
           Expanded(
             child: ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.all(8),
               itemCount: widget.foodSchedules.length,
               itemBuilder: (BuildContext context, int index) {
                 return SizedBox(
@@ -103,7 +106,7 @@ class _FoodSchedulePageState extends BasePageState<FoodSchedulePage> {
                     // child: Center(child: Text('Entry ${dinner[index]['name']}')),
                     child: Container(
                       margin: const EdgeInsets.only(
-                          top: 10, bottom: 20, left: 10, right: 0),
+                          top: 10, bottom: 20, left: 0, right: 0),
                       child: Row(
                         children: [
                           Expanded(

@@ -19,7 +19,7 @@ class _AppState extends State<App> {
   List<Food> _foods = [...defaultFoods];
   List<FoodSchedule> _foodSchedules = [];
   Map<String, FoodSchedule> _foodHistory = {};
-  DateTime _todayDate = DateTime.now();
+  final DateTime _todayDate = DateTime.now();
 
   void _setUser(User newUser) {
     setState(() {

@@ -3,7 +3,7 @@ import 'package:dieter/classes/base_page.dart';
 import 'package:dieter/models/user.dart';
 
 class ProfilePage extends BasePage {
-  ProfilePage({Key? key, required this.user, required this.setUser})
+  const ProfilePage({Key? key, required this.user, required this.setUser})
       : super(key: key, title: "Profile");
 
   final User user;

@@ -4,7 +4,7 @@ import 'package:dieter/models/food.dart';
 import 'package:dieter/models/food_schedule.dart';
 
 class FoodScheduleEditPage extends BasePage {
-  FoodScheduleEditPage({
+  const FoodScheduleEditPage({
     Key? key,
     required this.foods,
     required this.foodSchedules,
