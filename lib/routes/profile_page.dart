@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:dieter/classes/base_page.dart';
-import 'package:dieter/classes/user.dart';
+import 'package:dieter/models/user.dart';
 
-class Profile extends BasePage {
-  const Profile({Key? key, required this.user, required this.setUser})
+class ProfilePage extends BasePage {
+  ProfilePage({Key? key, required this.user, required this.setUser})
       : super(key: key, title: "Profile");
 
   final User user;
   final Function setUser;
 
   @override
-  BasePageState createState() => _ProfileState();
+  BasePageState createState() => _ProfilePageState();
 }
 
-class _ProfileState extends BasePageState<Profile> {
+class _ProfilePageState extends BasePageState<ProfilePage> {
   final ButtonStyle style =
       ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
 

@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:dieter/classes/base_page.dart';
-import 'package:dieter/classes/user.dart';
+import 'package:dieter/models/user.dart';
 import 'package:dieter/utils/helpers.dart';
 
-class Signup extends BasePage {
-  const Signup({Key? key, required this.setUser})
+class SignupPage extends BasePage {
+  SignupPage({Key? key, required this.setUser})
       : super(key: key, title: "Signup");
 
   final Function setUser;
 
   @override
-  BasePageState createState() => _SignupState();
+  BasePageState createState() => _SignupPageState();
 }
 
-class _SignupState extends BasePageState<Signup> {
+class _SignupPageState extends BasePageState<SignupPage> {
   final userController = TextEditingController();
   final passController = TextEditingController();
   final emailController = TextEditingController();
@@ -126,67 +126,79 @@ class _SignupState extends BasePageState<Signup> {
                 Container(
                   margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: TextField(
-                    obscureText: false,
+                    autofocus: true,
+                    controller: userController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Username',
                     ),
-                    controller: userController,
+                    keyboardType: TextInputType.name,
+                    obscureText: false,
                   ),
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: TextField(
-                    obscureText: true,
+                    autofocus: true,
+                    controller: passController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Password',
                     ),
-                    controller: passController,
+                    keyboardType: TextInputType.text,
+                    obscureText: true,
                   ),
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: TextField(
-                    obscureText: false,
+                    autofocus: true,
+                    controller: emailController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Email',
                     ),
-                    controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    obscureText: false,
                   ),
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: TextField(
-                    obscureText: false,
+                    autofocus: true,
+                    controller: heightController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Height (in.)',
                     ),
-                    controller: heightController,
+                    keyboardType: TextInputType.number,
+                    obscureText: false,
                   ),
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: TextField(
-                    obscureText: false,
+                    autofocus: true,
+                    controller: weightController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Weight (lbs.)',
                     ),
-                    controller: weightController,
+                    keyboardType: TextInputType.number,
+                    obscureText: false,
                   ),
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: TextField(
-                    obscureText: false,
+                    autofocus: true,
+                    controller: ageController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Age',
                     ),
-                    controller: ageController,
+                    keyboardType: TextInputType.number,
+                    obscureText: false,
                   ),
                 ),
                 Container(
@@ -195,6 +207,7 @@ class _SignupState extends BasePageState<Signup> {
                     value: sexDropdownValue,
                     icon: const Icon(Icons.arrow_downward),
                     iconSize: 24,
+                    isExpanded: true,
                     elevation: 16,
                     style: const TextStyle(color: Colors.deepPurple),
                     underline: Container(

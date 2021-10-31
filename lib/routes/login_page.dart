@@ -1,20 +1,20 @@
-import 'package:dieter/routes/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:dieter/classes/base_page.dart';
-import 'package:dieter/classes/user.dart';
+import 'package:dieter/models/user.dart';
+import 'package:dieter/routes/signup_page.dart';
 import 'package:dieter/utils/helpers.dart';
 
-class Login extends BasePage {
-  const Login({Key? key, required this.setUser})
+class LoginPage extends BasePage {
+  LoginPage({Key? key, required this.setUser})
       : super(key: key, title: "Login");
 
   final Function setUser;
 
   @override
-  BasePageState createState() => _LoginState();
+  BasePageState createState() => _LoginPageState();
 }
 
-class _LoginState extends BasePageState<Login> {
+class _LoginPageState extends BasePageState<LoginPage> {
   final userController = TextEditingController();
   final passController = TextEditingController();
   final mockuser = User(
@@ -63,7 +63,7 @@ class _LoginState extends BasePageState<Login> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => Signup(
+          builder: (context) => SignupPage(
                 setUser: widget.setUser,
               )),
     );
@@ -81,23 +81,27 @@ class _LoginState extends BasePageState<Login> {
             Container(
               margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
               child: TextField(
-                obscureText: false,
+                autofocus: true,
+                controller: userController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Username',
                 ),
-                controller: userController,
+                keyboardType: TextInputType.name,
+                obscureText: false,
               ),
             ),
             Container(
               margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
               child: TextField(
-                obscureText: true,
+                autofocus: true,
+                controller: passController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Password',
                 ),
-                controller: passController,
+                keyboardType: TextInputType.text,
+                obscureText: true,
               ),
             ),
             Container(

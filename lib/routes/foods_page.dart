@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:dieter/classes/food.dart';
 import 'package:dieter/classes/base_page.dart';
+import 'package:dieter/models/food.dart';
 
-class Foods extends BasePage {
-  const Foods({
+class FoodsPage extends BasePage {
+  FoodsPage({
     Key? key,
     required this.foods,
     required this.addFood,
@@ -15,10 +15,10 @@ class Foods extends BasePage {
   final Function removeFood;
 
   @override
-  BasePageState createState() => _FoodsState();
+  BasePageState createState() => _FoodsPageState();
 }
 
-class _FoodsState extends BasePageState<Foods> {
+class _FoodsPageState extends BasePageState<FoodsPage> {
   final foodNameController = TextEditingController();
   final foodCaloriesController = TextEditingController();
 
@@ -45,11 +45,14 @@ class _FoodsState extends BasePageState<Foods> {
           children: [
             Container(
               margin: const EdgeInsets.only(
-                  top: 20, bottom: 20, left: 10, right: 10),
+                  top: 20, bottom: 0, left: 10, right: 10),
               child: Row(children: [
                 Expanded(
                   child: TextField(
+                    autofocus: false,
                     decoration: const InputDecoration(
+                      isCollapsed: true,
+                      contentPadding: EdgeInsets.all(9),
                       border: OutlineInputBorder(),
                       labelText: 'Food Name',
                     ),
@@ -63,7 +66,10 @@ class _FoodsState extends BasePageState<Foods> {
                       left: 10,
                     ),
                     child: TextField(
+                      autofocus: false,
                       decoration: const InputDecoration(
+                        isCollapsed: true,
+                        contentPadding: EdgeInsets.all(9),
                         border: OutlineInputBorder(),
                         labelText: 'Calories',
                       ),

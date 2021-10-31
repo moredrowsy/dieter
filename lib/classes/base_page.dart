@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 
 class BasePage extends StatefulWidget {
-  const BasePage({Key? key, required this.title}) : super(key: key);
+  BasePage({Key? key, this.title = ""}) : super(key: key);
 
-  final String title;
-
-  String getTitle() {
-    return title;
-  }
+  String title;
 
   @override
   BasePageState createState() => BasePageState();

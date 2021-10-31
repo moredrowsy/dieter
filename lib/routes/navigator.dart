@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:dieter/classes/user.dart';
-import 'package:dieter/classes/food.dart';
-import 'package:dieter/routes/foods.dart';
-import 'package:dieter/routes/login.dart';
-import 'package:dieter/routes/today.dart';
-import 'package:dieter/routes/schedule.dart';
-import 'package:dieter/routes/profile.dart';
+import 'package:dieter/models/food.dart';
+import 'package:dieter/models/food_schedule.dart';
+import 'package:dieter/models/user.dart';
+import 'package:dieter/routes/food_schedule_page.dart';
+import 'package:dieter/routes/foods_page.dart';
+import 'package:dieter/routes/login_page.dart';
+import 'package:dieter/routes/profile_page.dart';
+import 'package:dieter/routes/today_page.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class BottomNavigator extends StatefulWidget {
@@ -17,6 +18,13 @@ class BottomNavigator extends StatefulWidget {
     required this.foods,
     required this.addFood,
     required this.removeFood,
+    required this.foodSchedules,
+    required this.addFoodScheduleItem,
+    required this.deleteFoodScheduleItem,
+    required this.updateFoodScheduleItem,
+    required this.todayDate,
+    required this.foodHistory,
+    required this.updateFoodHistory,
   }) : super(key: key);
 
   final String title;
@@ -25,6 +33,13 @@ class BottomNavigator extends StatefulWidget {
   final List<Food> foods;
   final Function addFood;
   final Function removeFood;
+  final List<FoodSchedule> foodSchedules;
+  final Function addFoodScheduleItem;
+  final Function deleteFoodScheduleItem;
+  final Function updateFoodScheduleItem;
+  final Map<String, FoodSchedule> foodHistory;
+  final DateTime todayDate;
+  final Function updateFoodHistory;
 
   @override
   _BottomNavigatorState createState() => _BottomNavigatorState();
@@ -44,14 +59,24 @@ class _BottomNavigatorState extends State<BottomNavigator> {
   Widget build(BuildContext context) {
     if (widget.user.username != "") {
       final List _widgetOptions = [
-        Home(user: widget.user),
-        const Schedule(),
-        Foods(
+        TodayPage(
+            user: widget.user,
+            todayDate: widget.todayDate,
+            foodHistory: widget.foodHistory,
+            updateFoodHistory: widget.updateFoodHistory),
+        FoodSchedulePage(
+          foods: widget.foods,
+          foodSchedules: widget.foodSchedules,
+          addFoodScheduleItem: widget.addFoodScheduleItem,
+          deleteFoodScheduleItem: widget.deleteFoodScheduleItem,
+          updateFoodScheduleItem: widget.updateFoodScheduleItem,
+        ),
+        FoodsPage(
           foods: widget.foods,
           addFood: widget.addFood,
           removeFood: widget.removeFood,
         ),
-        Profile(
+        ProfilePage(
           user: widget.user,
           setUser: widget.setUser,
         ),
@@ -65,19 +90,19 @@ class _BottomNavigatorState extends State<BottomNavigator> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: const Icon(Icons.today),
-              label: _widgetOptions[0].getTitle(),
+              label: _widgetOptions[0].title,
             ),
             BottomNavigationBarItem(
               icon: const Icon(Icons.schedule),
-              label: _widgetOptions[1].getTitle(),
+              label: _widgetOptions[1].title,
             ),
             BottomNavigationBarItem(
               icon: const Icon(Icons.food_bank_rounded),
-              label: _widgetOptions[2].getTitle(),
+              label: _widgetOptions[2].title,
             ),
             BottomNavigationBarItem(
               icon: const Icon(Icons.person),
-              label: _widgetOptions[3].getTitle(),
+              label: _widgetOptions[3].title,
             ),
           ],
           currentIndex: _selectedIndex,
@@ -89,7 +114,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
     } else {
       return Scaffold(
         body: Center(
-          child: Login(
+          child: LoginPage(
             setUser: widget.setUser,
           ),
         ),
