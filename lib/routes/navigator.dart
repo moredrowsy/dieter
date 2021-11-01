@@ -17,9 +17,11 @@ class BottomNavigator extends StatefulWidget {
     required this.user,
     required this.setUser,
     required this.foods,
+    required this.setFoods,
     required this.addFood,
     required this.removeFood,
     required this.foodSchedules,
+    required this.setFoodSchedules,
     required this.addFoodScheduleItem,
     required this.deleteFoodScheduleItem,
     required this.updateFoodScheduleItem,
@@ -32,9 +34,11 @@ class BottomNavigator extends StatefulWidget {
   final FoodUser user;
   final Function setUser;
   final List<Food> foods;
+  final Function setFoods;
   final Function addFood;
   final Function removeFood;
   final List<FoodSchedule> foodSchedules;
+  final Function setFoodSchedules;
   final Function addFoodScheduleItem;
   final Function deleteFoodScheduleItem;
   final Function updateFoodScheduleItem;
@@ -122,6 +126,8 @@ class _BottomNavigatorState extends State<BottomNavigator> {
         body: Center(
           child: LoginPage(
             setUser: widget.setUser,
+            setFoods: widget.setFoods,
+            setFoodSchedules: widget.setFoodSchedules,
           ),
         ),
       );

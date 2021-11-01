@@ -24,10 +24,8 @@ class _ProfilePageState extends BasePageState<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Column(
+      body: SafeArea(
+          child: Column(
         children: <Widget>[
           Container(
             margin: const EdgeInsets.only(top: 20),
@@ -228,7 +226,7 @@ class _ProfilePageState extends BasePageState<ProfilePage> {
             child: const Text('Log out'),
           ),
         ],
-      ),
+      )),
     );
   }
 }

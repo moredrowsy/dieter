@@ -43,10 +43,8 @@ class _TodayPageState extends BasePageState<TodayPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Column(
+      body: SafeArea(
+          child: Column(
         children: <Widget>[
           Container(
             margin: const EdgeInsets.only(top: 10),
@@ -55,7 +53,7 @@ class _TodayPageState extends BasePageState<TodayPage> {
                 const Expanded(
                   child: Center(
                     child: Text(
-                      'Calories',
+                      'Total Calories',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -323,7 +321,7 @@ class _TodayPageState extends BasePageState<TodayPage> {
             ),
           ),
         ],
-      ),
+      )),
     );
   }
 }

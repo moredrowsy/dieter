@@ -1,18 +1,35 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:dieter/models/food.dart';
-import 'dart:convert';
 
+part 'food_schedule.g.dart';
+
+@JsonSerializable()
 class FoodSchedule {
   FoodSchedule({
     this.name = "",
     this.totalCalories = 0,
     this.currentCalories = 0,
-  });
+    List<Food>? breakfast,
+    List<Food>? lunch,
+    List<Food>? dinner,
+  }) {
+    this.breakfast = breakfast ?? [];
+    this.lunch = lunch ?? [];
+    this.dinner = dinner ?? [];
+    updateCalories();
+  }
 
   String name;
   int totalCalories;
   int currentCalories;
+
+  @JsonKey(defaultValue: [])
   List<Food> breakfast = [];
+
+  @JsonKey(defaultValue: [])
   List<Food> lunch = [];
+
+  @JsonKey(defaultValue: [])
   List<Food> dinner = [];
 
   void addBreakfast(Food food) {
@@ -60,6 +77,20 @@ class FoodSchedule {
     }
   }
 
+  void updateTotalCalories() {
+    int calories = 0;
+    for (Food food in breakfast) {
+      calories += food.calories;
+    }
+    for (Food food in lunch) {
+      calories += food.calories;
+    }
+    for (Food food in dinner) {
+      calories += food.calories;
+    }
+    totalCalories = calories;
+  }
+
   void updateCurrentCalories() {
     int calories = 0;
     for (Food food in breakfast) {
@@ -80,20 +111,34 @@ class FoodSchedule {
     currentCalories = calories;
   }
 
-  FoodSchedule.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        totalCalories = int.parse(json['totalCalories']),
-        currentCalories = int.parse(json['currentCalories']),
-        breakfast = jsonDecode(json['breakfast']),
-        lunch = jsonDecode(json['lunch']),
-        dinner = jsonDecode(json['dinner']);
+  void updateCalories() {
+    int currentCals = 0;
+    int totalCals = 0;
 
-  Map<String, dynamic> toJson() => {
-        'name': name,
-        'totalCalories': totalCalories.toString(),
-        'currentCalories': currentCalories.toString(),
-        'breakfast': jsonEncode(breakfast),
-        'lunch': jsonEncode(lunch),
-        'dinner': jsonEncode(dinner),
-      };
+    for (Food food in breakfast) {
+      if (food.done) {
+        currentCals += food.calories;
+      }
+      totalCals += food.calories;
+    }
+    for (Food food in lunch) {
+      if (food.done) {
+        currentCals += food.calories;
+      }
+      totalCals += food.calories;
+    }
+    for (Food food in dinner) {
+      if (food.done) {
+        currentCals += food.calories;
+      }
+      totalCals += food.calories;
+    }
+    currentCalories = currentCals;
+    totalCalories = totalCals;
+  }
+
+  factory FoodSchedule.fromJson(Map<String, dynamic> json) =>
+      _$FoodScheduleFromJson(json);
+
+  Map<String, dynamic> toJson() => _$FoodScheduleToJson(this);
 }

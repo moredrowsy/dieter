@@ -27,10 +27,8 @@ class _HistoryPageState extends BasePageState<HistoryPage> {
     ];
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Column(
+      body: SafeArea(
+          child: Column(
         children: <Widget>[
           Container(
             margin:
@@ -137,7 +135,7 @@ class _HistoryPageState extends BasePageState<HistoryPage> {
             ),
           ),
         ],
-      ),
+      )),
     );
   }
 }

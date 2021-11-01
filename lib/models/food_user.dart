@@ -1,12 +1,34 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'food_user.g.dart';
+
+@JsonSerializable()
 class FoodUser {
+  @JsonKey(defaultValue: "")
   String uid = "";
-  final String username;
-  final String email;
+
+  @JsonKey(defaultValue: "")
+  String username;
+
+  @JsonKey(defaultValue: "")
+  String email;
+
+  @JsonKey(defaultValue: 0)
   double height; // in inches, in
+
+  @JsonKey(defaultValue: 0)
   double weight; // in pounds, lbs
+
+  @JsonKey(defaultValue: "male")
   String sex; // male or female
+
+  @JsonKey(defaultValue: 0)
   int age;
+
+  @JsonKey(defaultValue: 0)
   double bmi;
+
+  @JsonKey(defaultValue: 0)
   double bmr;
 
   FoodUser(
@@ -20,26 +42,8 @@ class FoodUser {
       this.bmi = 0,
       this.bmr = 0});
 
-  FoodUser.fromJson(Map<String, dynamic> json)
-      : uid = json['uid'],
-        username = json['username'],
-        email = json['email'],
-        height = double.parse(json['height']),
-        weight = double.parse(json['weight']),
-        sex = json['sex'],
-        age = int.parse(json['age']),
-        bmi = double.parse(json['bmi']),
-        bmr = double.parse(json['bmr']);
+  factory FoodUser.fromJson(Map<String, dynamic> json) =>
+      _$FoodUserFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        'uid': uid,
-        'username': username,
-        'email': email,
-        'height': height.toString(),
-        'weight': weight.toString(),
-        'sex': sex,
-        'age': age.toString(),
-        'bmi': bmi.toString(),
-        'bmr': bmr.toString(),
-      };
+  Map<String, dynamic> toJson() => _$FoodUserToJson(this);
 }

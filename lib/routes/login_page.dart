@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:dieter/models/food.dart';
+import 'package:dieter/models/food_schedule.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +10,16 @@ import 'package:dieter/models/food_user.dart';
 import 'package:dieter/routes/signup_page.dart';
 
 class LoginPage extends BasePage {
-  const LoginPage({Key? key, required this.setUser})
-      : super(key: key, title: "Login");
+  const LoginPage({
+    Key? key,
+    required this.setUser,
+    required this.setFoods,
+    required this.setFoodSchedules,
+  }) : super(key: key, title: "Login");
 
   final Function setUser;
+  final Function setFoods;
+  final Function setFoodSchedules;
 
   @override
   BasePageState createState() => _LoginPageState();
@@ -39,6 +49,38 @@ class _LoginPageState extends BasePageState<LoginPage> {
           .signInWithEmailAndPassword(
               email: emailController.text, password: passController.text)
           .then((value) {
+        // Create default foods list
+        FirebaseDatabase.instance
+            .reference()
+            .child('foods/${value.user!.uid}')
+            .once()
+            .then((docSnapshot) {
+          List<Food> foods = [];
+          docSnapshot.value.forEach((k, v) {
+            foods.add(Food.fromJson(jsonDecode(v)));
+          });
+          widget.setFoods(foods);
+        }).catchError((error) {
+          // print(error.toString());
+        });
+
+        // Create default foods list
+        FirebaseDatabase.instance
+            .reference()
+            .child('foodSchedules/${value.user!.uid}')
+            .once()
+            .then((docSnapshot) {
+          List<FoodSchedule> foodSchedules = [];
+          for (int i = 0; i < docSnapshot.value.length; ++i) {
+            foodSchedules.add(FoodSchedule.fromJson(
+                jsonDecode(docSnapshot.value[i]).cast<String, dynamic>()));
+          }
+          widget.setFoodSchedules(foodSchedules);
+        }).catchError((error) {
+          // print(error.toString());
+        });
+
+        // Create user profile
         FirebaseDatabase.instance
             .reference()
             .child('users/${value.user!.uid}')
@@ -77,6 +119,8 @@ class _LoginPageState extends BasePageState<LoginPage> {
       MaterialPageRoute(
           builder: (context) => SignupPage(
                 setUser: widget.setUser,
+                setFoods: widget.setFoods,
+                setFoodSchedules: widget.setFoodSchedules,
               )),
     );
   }

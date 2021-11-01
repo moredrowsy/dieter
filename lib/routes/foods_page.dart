@@ -37,10 +37,8 @@ class _FoodsPageState extends BasePageState<FoodsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: SingleChildScrollView(
+      body: SafeArea(
+          child: SingleChildScrollView(
         child: Column(
           children: [
             Container(
@@ -127,7 +125,7 @@ class _FoodsPageState extends BasePageState<FoodsPage> {
                 })
           ],
         ),
-      ),
+      )),
     );
   }
 }

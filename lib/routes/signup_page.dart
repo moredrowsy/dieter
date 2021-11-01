@@ -1,22 +1,31 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:dieter/classes/base_page.dart';
+import 'package:dieter/constants.dart';
 import 'package:dieter/models/food_user.dart';
 import 'package:dieter/utils/helpers.dart';
 
 class SignupPage extends BasePage {
-  const SignupPage({Key? key, required this.setUser})
-      : super(key: key, title: "Signup");
+  const SignupPage({
+    Key? key,
+    required this.setUser,
+    required this.setFoods,
+    required this.setFoodSchedules,
+  }) : super(key: key, title: "Signup");
 
   final Function setUser;
+  final Function setFoods;
+  final Function setFoodSchedules;
 
   @override
   BasePageState createState() => _SignupPageState();
 }
 
 class _SignupPageState extends BasePageState<SignupPage> {
-  final userController = TextEditingController();
+  final usernameController = TextEditingController();
   final passController = TextEditingController();
   final emailController = TextEditingController();
   final heightController = TextEditingController();
@@ -36,7 +45,7 @@ class _SignupPageState extends BasePageState<SignupPage> {
 
   void _signup() {
     try {
-      if (userController.text == "") {
+      if (usernameController.text == "") {
         throw Exception("Username can not be empty");
       }
       if (passController.text == "") {
@@ -92,7 +101,7 @@ class _SignupPageState extends BasePageState<SignupPage> {
           .then((value) {
         FoodUser user = FoodUser(
           uid: value.user!.uid,
-          username: userController.text,
+          username: usernameController.text,
           email: emailController.text,
           height: height,
           weight: weight,
@@ -117,6 +126,42 @@ class _SignupPageState extends BasePageState<SignupPage> {
           user.bmr = bmr.round().toDouble();
         }
 
+        // Create default foods list for user
+        Map<String, String> foods = {
+          for (var e in defaultFoods) e.name: jsonEncode(e)
+        };
+        FirebaseDatabase.instance
+            .reference()
+            .child('foods/${value.user!.uid}')
+            .set(foods)
+            .then((value) {
+          widget.setFoods(defaultFoods);
+        }).catchError((error) {
+          // print(error.toString());
+        });
+
+        // Ceate default foodSchedule list for user
+        Map<String, String> foodSchdules = {
+          for (int i = 0; i < defaultFoodSchedules.length; ++i)
+            i.toString(): jsonEncode(defaultFoodSchedules[i])
+        };
+        FirebaseDatabase.instance
+            .reference()
+            .child('foodSchedules/${value.user!.uid}')
+            .set(foodSchdules)
+            .then((value) {
+          widget.setFoodSchedules(defaultFoodSchedules);
+        }).catchError((error) {
+          // print(error.toString());
+        });
+
+        // // Create default food history for user
+        // FirebaseDatabase.instance
+        //     .reference()
+        //     .child('foodHistory/${value.user!.uid}')
+        //     .set(jsonEncode({}));
+
+        // Create user profile and navigate to back to previous page when done
         FirebaseDatabase.instance
             .reference()
             .child('users/${value.user!.uid}')
@@ -146,6 +191,14 @@ class _SignupPageState extends BasePageState<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
+    usernameController.text = "thuan";
+    passController.text = "123456";
+    emailController.text = "thuantang@gmail.com";
+    heightController.text = "64";
+    weightController.text = "140";
+    sexController.text = "male";
+    ageController.text = "25";
+
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
@@ -162,7 +215,7 @@ class _SignupPageState extends BasePageState<SignupPage> {
                   margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: TextField(
                     autofocus: true,
-                    controller: userController,
+                    controller: usernameController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Username',

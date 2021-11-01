@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:dieter/constants.dart';
 import 'package:dieter/models/food.dart';
 import 'package:dieter/models/food_schedule.dart';
 import 'package:dieter/models/food_user.dart';
@@ -15,15 +14,21 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  FoodUser user = FoodUser();
-  List<Food> _foods = [...defaultFoods];
+  FoodUser _user = FoodUser();
+  List<Food> _foods = [];
   List<FoodSchedule> _foodSchedules = [];
   Map<String, FoodSchedule> _foodHistory = {};
   final DateTime _todayDate = DateTime.now();
 
   void _setUser(FoodUser newUser) {
     setState(() {
-      user = newUser;
+      _user = newUser;
+    });
+  }
+
+  void _setFoods(List<Food> foods) {
+    setState(() {
+      _foods = foods;
     });
   }
 
@@ -37,6 +42,12 @@ class _AppState extends State<App> {
     setState(() {
       _foods.removeAt(index);
       _foods = [..._foods];
+    });
+  }
+
+  void _setFoodSchedules(List<FoodSchedule> foodSchedules) {
+    setState(() {
+      _foodSchedules = foodSchedules;
     });
   }
 
@@ -71,7 +82,7 @@ class _AppState extends State<App> {
       } else if (listType == "dinner") {
         _foodHistory[dateKey]!.dinner[index] = food;
       }
-      _foodHistory[dateKey]!.updateCurrentCalories();
+      _foodHistory[dateKey]!.updateCalories();
       _foodHistory = {..._foodHistory};
     });
   }
@@ -80,27 +91,34 @@ class _AppState extends State<App> {
     if (_foodSchedules.isNotEmpty) {
       FoodSchedule randFS =
           _foodSchedules[Random().nextInt(_foodSchedules.length)];
-      FoodSchedule newFoodSchedule =
-          FoodSchedule(name: randFS.name, totalCalories: randFS.totalCalories);
+      FoodSchedule newFoodSchedule = FoodSchedule(
+          name: randFS.name,
+          currentCalories: randFS.currentCalories,
+          totalCalories: randFS.totalCalories);
 
       for (Food food in randFS.breakfast) {
         newFoodSchedule.breakfast.add(Food(
           name: food.name,
           calories: food.calories,
+          done: food.done,
         ));
       }
       for (Food food in randFS.lunch) {
         newFoodSchedule.lunch.add(Food(
           name: food.name,
           calories: food.calories,
+          done: food.done,
         ));
       }
       for (Food food in randFS.dinner) {
         newFoodSchedule.dinner.add(Food(
           name: food.name,
           calories: food.calories,
+          done: food.done,
         ));
       }
+
+      newFoodSchedule.updateCalories();
 
       return newFoodSchedule;
     } else {
@@ -110,26 +128,6 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    if (_foodSchedules.isEmpty) {
-      // Add default food schedule
-      _foodSchedules.add(FoodSchedule(name: "Oatmeal, Burger, Beef Bowl"));
-      _foodSchedules[0].addBreakfast(Food(
-          name: defaultFoodsMap["Oatmeal"]!.name,
-          calories: defaultFoodsMap["Oatmeal"]!.calories));
-      _foodSchedules[0].addBreakfast(Food(
-          name: defaultFoodsMap["Milk"]!.name,
-          calories: defaultFoodsMap["Milk"]!.calories));
-      _foodSchedules[0].addLunch(Food(
-          name: defaultFoodsMap["Hamburger"]!.name,
-          calories: defaultFoodsMap["Hamburger"]!.calories));
-      _foodSchedules[0].addLunch(Food(
-          name: defaultFoodsMap["Gatorade"]!.name,
-          calories: defaultFoodsMap["Gatorade"]!.calories));
-      _foodSchedules[0].addDinner(Food(
-          name: defaultFoodsMap["Beef Bowl"]!.name,
-          calories: defaultFoodsMap["Beef Bowl"]!.calories));
-    }
-
     if (_foodHistory.isEmpty) {
       if (_foodSchedules.isNotEmpty) {
         String date = _todayDate.toString().substring(0, 10);
@@ -148,12 +146,14 @@ class _AppState extends State<App> {
       ),
       home: BottomNavigator(
         title: 'Dieter',
-        user: user,
+        user: _user,
         setUser: _setUser,
         foods: _foods,
+        setFoods: _setFoods,
         addFood: _addFood,
         removeFood: _removeFood,
         foodSchedules: _foodSchedules,
+        setFoodSchedules: _setFoodSchedules,
         addFoodScheduleItem: _addFoodScheduleItem,
         deleteFoodScheduleItem: _deleteFoodScheduleItem,
         updateFoodScheduleItem: _updateFoodScheduleItem,
