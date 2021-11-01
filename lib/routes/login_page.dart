@@ -1,8 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:dieter/classes/base_page.dart';
-import 'package:dieter/models/user.dart';
+import 'package:dieter/models/food_user.dart';
 import 'package:dieter/routes/signup_page.dart';
-import 'package:dieter/utils/helpers.dart';
 
 class LoginPage extends BasePage {
   const LoginPage({Key? key, required this.setUser})
@@ -15,47 +16,58 @@ class LoginPage extends BasePage {
 }
 
 class _LoginPageState extends BasePageState<LoginPage> {
-  final userController = TextEditingController();
+  final emailController = TextEditingController();
   final passController = TextEditingController();
-  final mockuser = User(
-      username: "john",
-      password: "test",
-      email: "john@gmail.com",
-      height: 64,
-      weight: 130,
-      sex: "male",
-      age: 25);
+  String errorString = "";
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    userController.dispose();
+    emailController.dispose();
     passController.dispose();
     super.dispose();
   }
 
   void _login() {
-    if (userController.text == mockuser.username &&
-        passController.text == mockuser.password) {
-      if (mockuser.bmi == 0) {
-        // Calculate BMI
-        // https://www.cdc.gov/nccdphp/dnpao/growthcharts/training/bmiage/page5_1.html
-        double bmi = getBMI(
-          mockuser.height,
-          mockuser.weight,
-        );
-        mockuser.bmi = bmi.round().toDouble();
+    try {
+      if (!emailController.text.contains(RegExp(
+          r"[a-zA-Z0-9!#$%&'*+\-\/=?^_`{|}~\.]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]{2,}"))) {
+        throw Exception("Email must be valid");
       }
 
-      if (mockuser.bmr == 0) {
-        // Calculate BMR
-        // https://www.livestrong.com/article/382462-what-is-bmi-and-bmr/
-        double bmr = getBMR(
-            mockuser.height, mockuser.weight, mockuser.age, mockuser.sex);
-        mockuser.bmr = bmr.round().toDouble();
-      }
+      FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+              email: emailController.text, password: passController.text)
+          .then((value) {
+        FirebaseDatabase.instance
+            .reference()
+            .child('users/${value.user!.uid}')
+            .once()
+            .then((docSnapshot) {
+          FoodUser user =
+              FoodUser.fromJson(docSnapshot.value.cast<String, dynamic>());
 
-      widget.setUser(mockuser);
+          widget.setUser(user);
+        }).catchError((error) {
+          // print(error.toString());
+        });
+      }).catchError((error) {
+        setState(() {
+          if (error.code == 'user-not-found') {
+            errorString = "User does not exist";
+          } else if (error.code == 'wrong-password') {
+            errorString = "Wrong password";
+          } else if (error.code == 'too-many-requests') {
+            errorString = "Too many attempts";
+          } else {
+            errorString = "Login failed";
+          }
+        });
+      });
+    } catch (e) {
+      setState(() {
+        errorString = e.toString().replaceFirst("Exception: ", "");
+      });
     }
   }
 
@@ -71,6 +83,9 @@ class _LoginPageState extends BasePageState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    emailController.text = "thuantang@gmail.com";
+    passController.text = "123456";
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -80,12 +95,16 @@ class _LoginPageState extends BasePageState<LoginPage> {
           children: <Widget>[
             Container(
               margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
+              child: Text(errorString),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
               child: TextField(
                 autofocus: true,
-                controller: userController,
+                controller: emailController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Username',
+                  labelText: 'Email',
                 ),
                 keyboardType: TextInputType.name,
                 obscureText: false,

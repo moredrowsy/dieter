@@ -2,7 +2,7 @@ import 'package:dieter/routes/history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:dieter/models/food.dart';
 import 'package:dieter/models/food_schedule.dart';
-import 'package:dieter/models/user.dart';
+import 'package:dieter/models/food_user.dart';
 import 'package:dieter/routes/food_schedule_page.dart';
 import 'package:dieter/routes/foods_page.dart';
 import 'package:dieter/routes/login_page.dart';
@@ -29,7 +29,7 @@ class BottomNavigator extends StatefulWidget {
   }) : super(key: key);
 
   final String title;
-  final User user;
+  final FoodUser user;
   final Function setUser;
   final List<Food> foods;
   final Function addFood;

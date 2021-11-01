@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "637687094268",
+    "project_id": "dieter-928e1",
+    "storage_bucket": "dieter-928e1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:637687094268:android:9062559234ffc656bff079",
+        "android_client_info": {
+          "package_name": "com.moredrowsy.dieter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "637687094268-c763ikhqc9qd372usmsav669ceemdg30.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9Boviw8Egids6wTIrWPvNvAAJwHN8pH8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "637687094268-c763ikhqc9qd372usmsav669ceemdg30.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

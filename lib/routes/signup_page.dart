@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:dieter/classes/base_page.dart';
-import 'package:dieter/models/user.dart';
+import 'package:dieter/models/food_user.dart';
 import 'package:dieter/utils/helpers.dart';
 
 class SignupPage extends BasePage {
@@ -24,6 +26,14 @@ class _SignupPageState extends BasePageState<SignupPage> {
   String sexDropdownValue = 'male';
   String errorString = "";
 
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    emailController.dispose();
+    passController.dispose();
+    super.dispose();
+  }
+
   void _signup() {
     try {
       if (userController.text == "") {
@@ -31,6 +41,9 @@ class _SignupPageState extends BasePageState<SignupPage> {
       }
       if (passController.text == "") {
         throw Exception("Password can not be empty");
+      }
+      if (passController.text.length < 6) {
+        throw Exception("Password should be at least 6 characters long");
       }
       if (emailController.text == "") {
         throw Exception("Email can not be empty");
@@ -70,10 +83,16 @@ class _SignupPageState extends BasePageState<SignupPage> {
         throw Exception("Age must be a number");
       }
 
-      setState(() {
-        User user = User(
+      // Firebase create user
+      FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passController.text,
+      )
+          .then((value) {
+        FoodUser user = FoodUser(
+          uid: value.user!.uid,
           username: userController.text,
-          password: passController.text,
           email: emailController.text,
           height: height,
           weight: weight,
@@ -98,9 +117,25 @@ class _SignupPageState extends BasePageState<SignupPage> {
           user.bmr = bmr.round().toDouble();
         }
 
-        widget.setUser(user);
-
-        Navigator.of(context).pop();
+        FirebaseDatabase.instance
+            .reference()
+            .child('users/${value.user!.uid}')
+            .set({...user.toJson()}).then((value) {
+          setState(() {
+            widget.setUser(user);
+            Navigator.of(context).pop();
+          });
+        }).catchError((error) {
+          // print(error.toString());
+        });
+      }).catchError((error) {
+        setState(() {
+          if (error.code == 'email-already-in-use') {
+            errorString = "Email already in use";
+          } else {
+            errorString = "Signin failed";
+          }
+        });
       });
     } catch (e) {
       setState(() {

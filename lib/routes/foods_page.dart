@@ -45,7 +45,7 @@ class _FoodsPageState extends BasePageState<FoodsPage> {
           children: [
             Container(
               margin: const EdgeInsets.only(
-                  top: 20, bottom: 0, left: 10, right: 10),
+                  top: 10, bottom: 0, left: 10, right: 10),
               child: Row(children: [
                 Expanded(
                   child: TextField(

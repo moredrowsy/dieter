@@ -1,6 +1,6 @@
-class User {
+class FoodUser {
+  String uid = "";
   final String username;
-  final String password;
   final String email;
   double height; // in inches, in
   double weight; // in pounds, lbs
@@ -9,9 +9,9 @@ class User {
   double bmi;
   double bmr;
 
-  User(
-      {this.username = "",
-      this.password = "",
+  FoodUser(
+      {this.uid = "",
+      this.username = "",
       this.email = "",
       this.height = 0,
       this.weight = 0,
@@ -20,9 +20,9 @@ class User {
       this.bmi = 0,
       this.bmr = 0});
 
-  User.fromJson(Map<String, dynamic> json)
-      : username = json['username'],
-        password = json['password'],
+  FoodUser.fromJson(Map<String, dynamic> json)
+      : uid = json['uid'],
+        username = json['username'],
         email = json['email'],
         height = double.parse(json['height']),
         weight = double.parse(json['weight']),
@@ -32,8 +32,8 @@ class User {
         bmr = double.parse(json['bmr']);
 
   Map<String, dynamic> toJson() => {
+        'uid': uid,
         'username': username,
-        'password': password,
         'email': email,
         'height': height.toString(),
         'weight': weight.toString(),

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:dieter/constants.dart';
 import 'package:dieter/models/food.dart';
 import 'package:dieter/models/food_schedule.dart';
-import 'package:dieter/models/user.dart';
+import 'package:dieter/models/food_user.dart';
 import 'package:dieter/routes/navigator.dart';
 
 class App extends StatefulWidget {
@@ -15,13 +15,13 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  User user = User();
+  FoodUser user = FoodUser();
   List<Food> _foods = [...defaultFoods];
   List<FoodSchedule> _foodSchedules = [];
   Map<String, FoodSchedule> _foodHistory = {};
   final DateTime _todayDate = DateTime.now();
 
-  void _setUser(User newUser) {
+  void _setUser(FoodUser newUser) {
     setState(() {
       user = newUser;
     });

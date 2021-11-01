@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dieter/classes/base_page.dart';
 import 'package:dieter/models/food_schedule.dart';
-import 'package:dieter/models/user.dart';
+import 'package:dieter/models/food_user.dart';
 
 class HistoryPage extends BasePage {
   const HistoryPage({
@@ -10,7 +10,7 @@ class HistoryPage extends BasePage {
     required this.foodHistory,
   }) : super(key: key, title: "History");
 
-  final User user;
+  final FoodUser user;
   final Map<String, FoodSchedule> foodHistory;
 
   @override

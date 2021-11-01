@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dieter/classes/base_page.dart';
 import 'package:dieter/models/food.dart';
 import 'package:dieter/models/food_schedule.dart';
-import 'package:dieter/models/user.dart';
+import 'package:dieter/models/food_user.dart';
 
 class TodayPage extends BasePage {
   const TodayPage({
@@ -13,7 +13,7 @@ class TodayPage extends BasePage {
     required this.updateFoodHistory,
   }) : super(key: key, title: "Today");
 
-  final User user;
+  final FoodUser user;
   final Map<String, FoodSchedule> foodHistory;
   final DateTime todayDate;
   final Function updateFoodHistory;
@@ -49,7 +49,7 @@ class _TodayPageState extends BasePageState<TodayPage> {
       body: Column(
         children: <Widget>[
           Container(
-            margin: const EdgeInsets.only(top: 20),
+            margin: const EdgeInsets.only(top: 10),
             child: Row(
               children: [
                 const Expanded(

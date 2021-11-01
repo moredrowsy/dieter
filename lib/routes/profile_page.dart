@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:dieter/classes/base_page.dart';
-import 'package:dieter/models/user.dart';
+import 'package:dieter/models/food_user.dart';
 
 class ProfilePage extends BasePage {
   const ProfilePage({Key? key, required this.user, required this.setUser})
       : super(key: key, title: "Profile");
 
-  final User user;
+  final FoodUser user;
   final Function setUser;
 
   @override
@@ -18,7 +18,7 @@ class _ProfilePageState extends BasePageState<ProfilePage> {
       ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
 
   void _logout() {
-    widget.setUser(User());
+    widget.setUser(FoodUser());
   }
 
   @override
