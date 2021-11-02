@@ -10,12 +10,14 @@ class FoodScheduleEditPage extends BasePage {
     required this.foodSchedules,
     required this.foodScheduleIndex,
     required this.updateFoodScheduleItem,
+    required this.renameFoodScheduleName,
   }) : super(key: key, title: "Food Schedule Edit");
 
   final List<Food> foods;
   final List<FoodSchedule> foodSchedules;
   final int foodScheduleIndex;
   final Function updateFoodScheduleItem;
+  final Function renameFoodScheduleName;
 
   @override
   BasePageState createState() => _FoodScheduleEditPageState();
@@ -69,11 +71,15 @@ class _FoodScheduleEditPageState extends BasePageState<FoodScheduleEditPage> {
         widget.foodSchedules[widget.foodScheduleIndex]);
   }
 
-  void saveFoodScheduleName() {
-    widget.foodSchedules[widget.foodScheduleIndex].name =
-        foodScheduleNameController.text.trim();
-    widget.updateFoodScheduleItem(widget.foodScheduleIndex,
-        widget.foodSchedules[widget.foodScheduleIndex]);
+  void renameFoodScheduleName() {
+    if (widget.foodSchedules[widget.foodScheduleIndex].name !=
+        foodScheduleNameController.text.trim()) {
+      String oldName = widget.foodSchedules[widget.foodScheduleIndex].name;
+      widget.foodSchedules[widget.foodScheduleIndex].name =
+          foodScheduleNameController.text.trim();
+      widget.renameFoodScheduleName(widget.foodScheduleIndex,
+          widget.foodSchedules[widget.foodScheduleIndex], oldName);
+    }
   }
 
   @override
@@ -113,7 +119,7 @@ class _FoodScheduleEditPageState extends BasePageState<FoodScheduleEditPage> {
                     icon: const Icon(Icons.save, size: 18),
                     tooltip: 'Save Food Schedule Name',
                     padding: EdgeInsets.zero,
-                    onPressed: saveFoodScheduleName,
+                    onPressed: renameFoodScheduleName,
                   ),
                 ),
               ],

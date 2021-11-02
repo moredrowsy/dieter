@@ -3,6 +3,7 @@ import 'package:dieter/models/food_schedule.dart';
 import 'package:dieter/models/food_history.dart';
 import 'package:dieter/models/food_user.dart';
 import 'package:dieter/routes/navigator.dart';
+import 'package:dieter/utils/firebase.dart';
 import 'package:dieter/utils/helpers.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,9 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   FoodUser _user = FoodUser();
   List<Food> _foods = [];
+  final Set<String> _foodNames = {};
   List<FoodSchedule> _foodSchedules = [];
+  final Set<String> _foodscheduleNames = {};
   Map<String, FoodHistory> _foodHistories = {};
   final DateTime _todayDate = DateTime.now();
 
@@ -29,17 +32,24 @@ class _AppState extends State<App> {
   void _setFoods(List<Food> foods) {
     setState(() {
       _foods = foods;
+      for (var element in foods) {
+        _foodNames.add(element.name);
+      }
     });
   }
 
   void _addFood(Food food) {
     setState(() {
+      fbSetFood(_user.uid, food);
       _foods = [..._foods, food];
+      _foodNames.add(food.name);
     });
   }
 
   void _removeFood(int index) {
     setState(() {
+      fbRemoveFood(_user.uid, _foods[index]);
+      _foodNames.remove(_foods[index].name);
       _foods.removeAt(index);
       _foods = [..._foods];
     });
@@ -48,6 +58,9 @@ class _AppState extends State<App> {
   void _setFoodSchedules(List<FoodSchedule> foodSchedules) {
     setState(() {
       _foodSchedules = foodSchedules;
+      for (var element in foodSchedules) {
+        _foodscheduleNames.add(element.name);
+      }
     });
   }
 
@@ -55,11 +68,15 @@ class _AppState extends State<App> {
     setState(() {
       _foodSchedules.add(foodSchedule);
       _foodSchedules = [..._foodSchedules];
+      _foodscheduleNames.add(foodSchedule.name);
+      fbAddFoodSchedule(_user.uid, foodSchedule);
     });
   }
 
   void _deleteFoodScheduleItem(int index) {
     setState(() {
+      fbRemoveFoodSchedule(_user.uid, _foodSchedules[index].name);
+      _foodscheduleNames.remove(_foodSchedules[index].name);
       _foodSchedules.removeAt(index);
       _foodSchedules = [..._foodSchedules];
     });
@@ -75,6 +92,19 @@ class _AppState extends State<App> {
     setState(() {
       _foodSchedules[index] = foodSchedule;
       _foodSchedules = [..._foodSchedules];
+      fbAddFoodSchedule(_user.uid, foodSchedule);
+    });
+  }
+
+  void _renameFoodScheduleName(
+      int index, FoodSchedule foodSchedule, String oldName) {
+    setState(() {
+      fbRemoveFoodSchedule(_user.uid, oldName);
+      _foodscheduleNames.remove(oldName);
+      _foodSchedules[index] = foodSchedule;
+      _foodSchedules = [..._foodSchedules];
+      _foodscheduleNames.add(foodSchedule.name);
+      fbAddFoodSchedule(_user.uid, foodSchedule);
     });
   }
 
@@ -90,6 +120,7 @@ class _AppState extends State<App> {
       }
       _foodHistories[dateKey]!.foodSchedule.updateCalories();
       _foodHistories = {..._foodHistories};
+      fbSetFoodHistory(_user.uid, _foodHistories[dateKey]!);
     });
   }
 
@@ -129,14 +160,17 @@ class _AppState extends State<App> {
         user: _user,
         setUser: _setUser,
         foods: _foods,
+        foodNames: _foodNames,
         setFoods: _setFoods,
         addFood: _addFood,
         removeFood: _removeFood,
         foodSchedules: _foodSchedules,
+        foodscheduleNames: _foodscheduleNames,
         setFoodSchedules: _setFoodSchedules,
         addFoodScheduleItem: _addFoodScheduleItem,
         deleteFoodScheduleItem: _deleteFoodScheduleItem,
         updateFoodScheduleItem: _updateFoodScheduleItem,
+        renameFoodScheduleName: _renameFoodScheduleName,
         todayDate: _todayDate,
         foodHistories: _foodHistories,
         setFoodHistories: _setFoodHistories,

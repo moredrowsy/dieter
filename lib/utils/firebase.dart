@@ -29,10 +29,9 @@ void fbfbHydrateFoodschedules(String uid, Function callback) {
       .once()
       .then((docSnapshot) {
     List<FoodSchedule> foodSchedules = [];
-    for (int i = 0; i < docSnapshot.value.length; ++i) {
-      foodSchedules.add(FoodSchedule.fromJson(
-          jsonDecode(docSnapshot.value[i]).cast<String, dynamic>()));
-    }
+    docSnapshot.value.forEach((k, v) {
+      foodSchedules.add(FoodSchedule.fromJson(jsonDecode(v)));
+    });
     callback(foodSchedules);
   }).catchError((error) {
     // print(error.toString());
@@ -87,11 +86,35 @@ void fbSetFoods(String uid, List<Food> foods, [Function? callback]) {
   });
 }
 
+void fbSetFood(String uid, Food food, [Function? callback]) {
+  FirebaseDatabase.instance
+      .reference()
+      .child('foods/' + uid + '/' + food.name)
+      .set(jsonEncode(food))
+      .then((value) {
+    callback!();
+  }).catchError((error) {
+    // print(error.toString());
+  });
+}
+
+void fbRemoveFood(String uid, Food food, [Function? callback]) {
+  FirebaseDatabase.instance
+      .reference()
+      .child('foods/' + uid + '/' + food.name)
+      .remove()
+      .then((value) {
+    callback!();
+  }).catchError((error) {
+    // print(error.toString());
+  });
+}
+
 void fbSetFoodSchedules(String uid, List<FoodSchedule> foodSchdules,
     [Function? callback]) {
   Map<String, String> foodSchdulesEncoded = {
     for (int i = 0; i < foodSchdules.length; ++i)
-      i.toString(): jsonEncode(foodSchdules[i])
+      foodSchdules[i].name: jsonEncode(foodSchdules[i])
   };
   FirebaseDatabase.instance
       .reference()
@@ -99,6 +122,31 @@ void fbSetFoodSchedules(String uid, List<FoodSchedule> foodSchdules,
       .set(foodSchdulesEncoded)
       .then((value) {
     callback!(foodSchdulesEncoded);
+  }).catchError((error) {
+    // print(error.toString());
+  });
+}
+
+void fbAddFoodSchedule(String uid, FoodSchedule foodSchdule,
+    [Function? callback]) {
+  FirebaseDatabase.instance
+      .reference()
+      .child('foodSchedules/' + uid + '/' + foodSchdule.name)
+      .set(jsonEncode(foodSchdule))
+      .then((value) {
+    callback!();
+  }).catchError((error) {
+    // print(error.toString());
+  });
+}
+
+void fbRemoveFoodSchedule(String uid, String key, [Function? callback]) {
+  FirebaseDatabase.instance
+      .reference()
+      .child('foodSchedules/' + uid + '/' + key)
+      .remove()
+      .then((value) {
+    callback!();
   }).catchError((error) {
     // print(error.toString());
   });
@@ -114,6 +162,19 @@ void fbSetFoodHistories(String uid, Map<String, FoodHistory> foodHistories,
       .set(foodHistoriesEncoded)
       .then((value) {
     callback!(foodHistoriesEncoded);
+  }).catchError((error) {
+    // print(error.toString());
+  });
+}
+
+void fbSetFoodHistory(String uid, FoodHistory foodHistory,
+    [Function? callback]) {
+  FirebaseDatabase.instance
+      .reference()
+      .child('foodHistories/' + uid + '/' + foodHistory.dateString)
+      .set(jsonEncode(foodHistory))
+      .then((value) {
+    callback!();
   }).catchError((error) {
     // print(error.toString());
   });

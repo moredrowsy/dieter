@@ -18,14 +18,17 @@ class BottomNavigator extends StatefulWidget {
     required this.user,
     required this.setUser,
     required this.foods,
+    required this.foodNames,
     required this.setFoods,
     required this.addFood,
     required this.removeFood,
     required this.foodSchedules,
+    required this.foodscheduleNames,
     required this.setFoodSchedules,
     required this.addFoodScheduleItem,
     required this.deleteFoodScheduleItem,
     required this.updateFoodScheduleItem,
+    required this.renameFoodScheduleName,
     required this.todayDate,
     required this.foodHistories,
     required this.setFoodHistories,
@@ -36,14 +39,17 @@ class BottomNavigator extends StatefulWidget {
   final FoodUser user;
   final Function setUser;
   final List<Food> foods;
+  final Set<String> foodNames;
   final Function setFoods;
   final Function addFood;
   final Function removeFood;
   final List<FoodSchedule> foodSchedules;
+  final Set<String> foodscheduleNames;
   final Function setFoodSchedules;
   final Function addFoodScheduleItem;
   final Function deleteFoodScheduleItem;
   final Function updateFoodScheduleItem;
+  final Function renameFoodScheduleName;
   final DateTime todayDate;
   final Map<String, FoodHistory> foodHistories;
   final Function setFoodHistories;
@@ -74,13 +80,16 @@ class _BottomNavigatorState extends State<BottomNavigator> {
             updateFoodHistory: widget.updateFoodHistory),
         FoodSchedulePage(
           foods: widget.foods,
+          foodscheduleNames: widget.foodscheduleNames,
           foodSchedules: widget.foodSchedules,
           addFoodScheduleItem: widget.addFoodScheduleItem,
           deleteFoodScheduleItem: widget.deleteFoodScheduleItem,
           updateFoodScheduleItem: widget.updateFoodScheduleItem,
+          renameFoodScheduleName: widget.renameFoodScheduleName,
         ),
         FoodsPage(
           foods: widget.foods,
+          foodNames: widget.foodNames,
           addFood: widget.addFood,
           removeFood: widget.removeFood,
         ),

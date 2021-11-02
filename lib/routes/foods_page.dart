@@ -6,11 +6,13 @@ class FoodsPage extends BasePage {
   const FoodsPage({
     Key? key,
     required this.foods,
+    required this.foodNames,
     required this.addFood,
     required this.removeFood,
   }) : super(key: key, title: "Foods");
 
   final List<Food> foods;
+  final Set<String> foodNames;
   final Function addFood;
   final Function removeFood;
 
@@ -24,12 +26,17 @@ class _FoodsPageState extends BasePageState<FoodsPage> {
 
   void _addFood() {
     if (foodNameController.text != "" && foodCaloriesController.text != "") {
-      try {
-        int calories =
-            double.parse(foodCaloriesController.text).round().toInt();
-        widget.addFood(Food(name: foodNameController.text, calories: calories));
-      } catch (e) {
-        //
+      if (widget.foodNames.contains(foodNameController.text.trim())) {
+        // TODO: Handle dupe name
+      } else {
+        try {
+          int calories =
+              double.parse(foodCaloriesController.text).round().toInt();
+          widget
+              .addFood(Food(name: foodNameController.text, calories: calories));
+        } catch (e) {
+          //
+        }
       }
     }
   }

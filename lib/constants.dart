@@ -12,12 +12,12 @@ List<Food> defaultFoods = [
 Map<String, Food> defaultFoodsMap = {for (var e in defaultFoods) e.name: e};
 
 FoodSchedule fs1 = FoodSchedule(
-    name: 'Oatmeal, Burger, Beef Bowl',
+    name: 'Oatmeal, Burger, Beef Bowl 1',
     breakfast: [defaultFoodsMap["Oatmeal"]!, defaultFoodsMap["Milk"]!],
     lunch: [defaultFoodsMap["Hamburger"]!, defaultFoodsMap["Gatorade"]!],
     dinner: [defaultFoodsMap["Beef Bowl"]!]);
 FoodSchedule fs2 = FoodSchedule(
-    name: 'Oatmeal, Burger, Beef Bowl',
+    name: 'Oatmeal, Burger, Beef Bowl 2',
     breakfast: [defaultFoodsMap["Hamburger"]!, defaultFoodsMap["Gatorade"]!],
     lunch: [defaultFoodsMap["Oatmeal"]!, defaultFoodsMap["Milk"]!],
     dinner: [defaultFoodsMap["Beef Bowl"]!]);

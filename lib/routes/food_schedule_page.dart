@@ -9,16 +9,20 @@ class FoodSchedulePage extends BasePage {
     Key? key,
     required this.foods,
     required this.foodSchedules,
+    required this.foodscheduleNames,
     required this.addFoodScheduleItem,
     required this.deleteFoodScheduleItem,
     required this.updateFoodScheduleItem,
+    required this.renameFoodScheduleName,
   }) : super(key: key, title: "Food Schedule");
 
   final List<Food> foods;
   final List<FoodSchedule> foodSchedules;
+  final Set<String> foodscheduleNames;
   final Function addFoodScheduleItem;
   final Function deleteFoodScheduleItem;
   final Function updateFoodScheduleItem;
+  final Function renameFoodScheduleName;
 
   @override
   BasePageState createState() => _FoodSchedulePageState();
@@ -39,6 +43,7 @@ class _FoodSchedulePageState extends BasePageState<FoodSchedulePage> {
           foodSchedules: widget.foodSchedules,
           foodScheduleIndex: index,
           updateFoodScheduleItem: widget.updateFoodScheduleItem,
+          renameFoodScheduleName: widget.renameFoodScheduleName,
         ),
       ),
     );
@@ -46,9 +51,14 @@ class _FoodSchedulePageState extends BasePageState<FoodSchedulePage> {
 
   void addFoodSchedule() {
     if (newFoodScheduleNameController.text.isNotEmpty) {
-      widget.addFoodScheduleItem(
-          FoodSchedule(name: newFoodScheduleNameController.text));
-      newFoodScheduleNameController.text = "";
+      if (widget.foodscheduleNames
+          .contains(newFoodScheduleNameController.text.trim())) {
+        // TODO: Handle dupe name
+      } else {
+        widget.addFoodScheduleItem(
+            FoodSchedule(name: newFoodScheduleNameController.text));
+        newFoodScheduleNameController.text = "";
+      }
     }
   }
 
