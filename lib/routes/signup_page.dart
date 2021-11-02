@@ -1,12 +1,10 @@
-import 'dart:convert';
-
-import 'package:dieter/models/food_history.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:dieter/classes/base_page.dart';
 import 'package:dieter/constants.dart';
+import 'package:dieter/models/food_history.dart';
 import 'package:dieter/models/food_user.dart';
+import 'package:dieter/utils/firebase.dart';
 import 'package:dieter/utils/helpers.dart';
 
 class SignupPage extends BasePage {
@@ -130,32 +128,13 @@ class _SignupPageState extends BasePageState<SignupPage> {
         }
 
         // Create default foods list for user
-        Map<String, String> foods = {
-          for (var e in defaultFoods) e.name: jsonEncode(e)
-        };
-        FirebaseDatabase.instance
-            .reference()
-            .child('foods/${value.user!.uid}')
-            .set(foods)
-            .then((value) {
+        fbSetFoods(user.uid, defaultFoods, (value) {
           widget.setFoods(defaultFoods);
-        }).catchError((error) {
-          // print(error.toString());
         });
 
         // Ceate default foodSchedule list for user
-        Map<String, String> foodSchdules = {
-          for (int i = 0; i < defaultFoodSchedules.length; ++i)
-            i.toString(): jsonEncode(defaultFoodSchedules[i])
-        };
-        FirebaseDatabase.instance
-            .reference()
-            .child('foodSchedules/${value.user!.uid}')
-            .set(foodSchdules)
-            .then((value) {
+        fbSetFoodSchedules(user.uid, defaultFoodSchedules, (value) {
           widget.setFoodSchedules(defaultFoodSchedules);
-        }).catchError((error) {
-          // print(error.toString());
         });
 
         // Create default food histories for user
@@ -168,27 +147,16 @@ class _SignupPageState extends BasePageState<SignupPage> {
             foodSchedule: getNewRandomFoodSchedule(defaultFoodSchedules),
             bmr: user.bmr,
             bmi: user.bmi);
-        FirebaseDatabase.instance
-            .reference()
-            .child('foodHistories/${value.user!.uid}')
-            .set({dateString: jsonEncode(foodHistories[dateString])}).then(
-                (value) {
+        fbSetFoodHistories(user.uid, foodHistories, (value) {
           widget.setFoodHistories(foodHistories);
-        }).catchError((error) {
-          // print(error.toString());
         });
 
         // Create user profile and navigate to back to previous page when done
-        FirebaseDatabase.instance
-            .reference()
-            .child('users/${value.user!.uid}')
-            .set({...user.toJson()}).then((value) {
+        fbSetUser(user, (value) {
           setState(() {
-            widget.setUser(user);
+            widget.setUser(value);
             Navigator.of(context).pop();
           });
-        }).catchError((error) {
-          // print(error.toString());
         });
       }).catchError((error) {
         setState(() {

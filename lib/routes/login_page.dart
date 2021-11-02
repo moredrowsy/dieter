@@ -1,14 +1,8 @@
-import 'dart:convert';
-
-import 'package:dieter/models/food.dart';
-import 'package:dieter/models/food_history.dart';
-import 'package:dieter/models/food_schedule.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:dieter/classes/base_page.dart';
-import 'package:dieter/models/food_user.dart';
 import 'package:dieter/routes/signup_page.dart';
+import 'package:dieter/utils/firebase.dart';
 
 class LoginPage extends BasePage {
   const LoginPage({
@@ -52,67 +46,19 @@ class _LoginPageState extends BasePageState<LoginPage> {
           .signInWithEmailAndPassword(
               email: emailController.text, password: passController.text)
           .then((value) {
-        // Create default foods list
-        FirebaseDatabase.instance
-            .reference()
-            .child('foods/${value.user!.uid}')
-            .once()
-            .then((docSnapshot) {
-          List<Food> foods = [];
-          docSnapshot.value.forEach((k, v) {
-            foods.add(Food.fromJson(jsonDecode(v)));
-          });
-          widget.setFoods(foods);
-        }).catchError((error) {
-          // print(error.toString());
-        });
+        String uid = value.user!.uid;
 
-        // Create default foodSchdules list
-        FirebaseDatabase.instance
-            .reference()
-            .child('foodSchedules/${value.user!.uid}')
-            .once()
-            .then((docSnapshot) {
-          List<FoodSchedule> foodSchedules = [];
-          for (int i = 0; i < docSnapshot.value.length; ++i) {
-            foodSchedules.add(FoodSchedule.fromJson(
-                jsonDecode(docSnapshot.value[i]).cast<String, dynamic>()));
-          }
-          widget.setFoodSchedules(foodSchedules);
-        }).catchError((error) {
-          // print(error.toString());
-        });
+        // Load user foods list
+        fbHydrateFoods(uid, widget.setFoods);
 
-        // Create default foodSchdules list
-        Map<String, FoodHistory> foodHistories = {};
-        FirebaseDatabase.instance
-            .reference()
-            .child('foodHistories/${value.user!.uid}')
-            .once()
-            .then((docSnapshot) {
-          docSnapshot.value.cast<String, dynamic>().forEach((k, v) {
-            FoodHistory fh =
-                FoodHistory.fromJson(jsonDecode(v).cast<String, dynamic>());
-            foodHistories[fh.dateString] = fh;
-          });
-          widget.setFoodHistories(foodHistories);
-        }).catchError((error) {
-          // print(error.toString());
-        });
+        // Load user foodSchdules list
+        fbfbHydrateFoodschedules(uid, widget.setFoodSchedules);
 
-        // Create user profile
-        FirebaseDatabase.instance
-            .reference()
-            .child('users/${value.user!.uid}')
-            .once()
-            .then((docSnapshot) {
-          FoodUser user =
-              FoodUser.fromJson(docSnapshot.value.cast<String, dynamic>());
+        // Load user foodHistories list
+        fbHydrateFoodHistories(uid, widget.setFoodHistories);
 
-          widget.setUser(user);
-        }).catchError((error) {
-          // print(error.toString());
-        });
+        // Load user profile
+        fbHydrateUser(uid, widget.setUser);
       }).catchError((error) {
         setState(() {
           if (error.code == 'user-not-found') {
