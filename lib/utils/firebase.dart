@@ -110,11 +110,11 @@ void fbRemoveFood(String uid, Food food, [Function? callback]) {
   });
 }
 
-void fbSetFoodSchedules(String uid, List<FoodSchedule> foodSchdules,
+void fbSetFoodSchedules(String uid, List<FoodSchedule> foodSchedules,
     [Function? callback]) {
   Map<String, String> foodSchdulesEncoded = {
-    for (int i = 0; i < foodSchdules.length; ++i)
-      foodSchdules[i].name: jsonEncode(foodSchdules[i])
+    for (int i = 0; i < foodSchedules.length; ++i)
+      foodSchedules[i].name: jsonEncode(foodSchedules[i])
   };
   FirebaseDatabase.instance
       .reference()

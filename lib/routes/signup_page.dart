@@ -109,32 +109,16 @@ class _SignupPageState extends BasePageState<SignupPage> {
           sex: sexDropdownValue,
           age: age,
         );
-
-        if (user.bmi == 0) {
-          // Calculate BMI
-          // https://www.cdc.gov/nccdphp/dnpao/growthcharts/training/bmiage/page5_1.html
-          double bmi = getBMI(
-            user.height,
-            user.weight,
-          );
-          user.bmi = bmi.round().toDouble();
-        }
-
-        if (user.bmr == 0) {
-          // Calculate BMR
-          // https://www.livestrong.com/article/382462-what-is-bmi-and-bmr/
-          double bmr = getBMR(user.height, user.weight, user.age, user.sex);
-          user.bmr = bmr.round().toDouble();
-        }
+        user.updateBMIAndBMR();
 
         // Create default foods list for user
         fbSetFoods(user.uid, defaultFoods, (value) {
-          widget.setFoods(defaultFoods);
+          widget.setFoods(defaultFoods, false);
         });
 
         // Ceate default foodSchedule list for user
         fbSetFoodSchedules(user.uid, defaultFoodSchedules, (value) {
-          widget.setFoodSchedules(defaultFoodSchedules);
+          widget.setFoodSchedules(defaultFoodSchedules, false);
         });
 
         // Create default food histories for user
@@ -148,13 +132,13 @@ class _SignupPageState extends BasePageState<SignupPage> {
             bmr: user.bmr,
             bmi: user.bmi);
         fbSetFoodHistories(user.uid, foodHistories, (value) {
-          widget.setFoodHistories(foodHistories);
+          widget.setFoodHistories(foodHistories, false);
         });
 
         // Create user profile and navigate to back to previous page when done
         fbSetUser(user, (value) {
           setState(() {
-            widget.setUser(value);
+            widget.setUser(user, false);
             Navigator.of(context).pop();
           });
         });

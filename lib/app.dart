@@ -23,13 +23,30 @@ class _AppState extends State<App> {
   Map<String, FoodHistory> _foodHistories = {};
   final DateTime _todayDate = DateTime.now();
 
-  void _setUser(FoodUser newUser) {
+  void _setUser(FoodUser newUser, [bool fbSet = true]) {
+    if (!newUser.isEmptyUser() && fbSet) {
+      fbSetUser(newUser);
+    }
+
     setState(() {
-      _user = newUser;
+      _user = FoodUser(
+          uid: newUser.uid,
+          username: newUser.username,
+          email: newUser.email,
+          height: newUser.height,
+          weight: newUser.weight,
+          sex: newUser.sex,
+          age: newUser.age,
+          bmi: newUser.bmi,
+          bmr: newUser.bmr);
     });
   }
 
-  void _setFoods(List<Food> foods) {
+  void _setFoods(List<Food> foods, [bool fbSet = true]) {
+    if (!_user.isEmptyUser() && fbSet) {
+      fbSetFoods(_user.uid, foods);
+    }
+
     setState(() {
       _foods = foods;
       for (var element in foods) {
@@ -40,7 +57,7 @@ class _AppState extends State<App> {
 
   void _addFood(Food food) {
     setState(() {
-      fbSetFood(_user.uid, food);
+      if (_user.uid.isNotEmpty) fbSetFood(_user.uid, food);
       _foods = [..._foods, food];
       _foodNames.add(food.name);
     });
@@ -48,14 +65,19 @@ class _AppState extends State<App> {
 
   void _removeFood(int index) {
     setState(() {
-      fbRemoveFood(_user.uid, _foods[index]);
+      if (_user.uid.isNotEmpty) fbRemoveFood(_user.uid, _foods[index]);
       _foodNames.remove(_foods[index].name);
       _foods.removeAt(index);
       _foods = [..._foods];
     });
   }
 
-  void _setFoodSchedules(List<FoodSchedule> foodSchedules) {
+  void _setFoodSchedules(List<FoodSchedule> foodSchedules,
+      [bool fbSet = true]) {
+    if (!_user.isEmptyUser() && fbSet) {
+      fbSetFoodSchedules(_user.uid, foodSchedules);
+    }
+
     setState(() {
       _foodSchedules = foodSchedules;
       for (var element in foodSchedules) {
@@ -69,20 +91,27 @@ class _AppState extends State<App> {
       _foodSchedules.add(foodSchedule);
       _foodSchedules = [..._foodSchedules];
       _foodscheduleNames.add(foodSchedule.name);
-      fbAddFoodSchedule(_user.uid, foodSchedule);
+      if (_user.uid.isNotEmpty) fbAddFoodSchedule(_user.uid, foodSchedule);
     });
   }
 
   void _deleteFoodScheduleItem(int index) {
     setState(() {
-      fbRemoveFoodSchedule(_user.uid, _foodSchedules[index].name);
+      if (_user.uid.isNotEmpty) {
+        fbRemoveFoodSchedule(_user.uid, _foodSchedules[index].name);
+      }
       _foodscheduleNames.remove(_foodSchedules[index].name);
       _foodSchedules.removeAt(index);
       _foodSchedules = [..._foodSchedules];
     });
   }
 
-  void _setFoodHistories(Map<String, FoodHistory> foodHistories) {
+  void _setFoodHistories(Map<String, FoodHistory> foodHistories,
+      [bool fbSet = true]) {
+    if (!_user.isEmptyUser() && fbSet) {
+      fbSetFoodHistories(_user.uid, foodHistories);
+    }
+
     setState(() {
       _foodHistories = foodHistories;
     });
@@ -92,19 +121,19 @@ class _AppState extends State<App> {
     setState(() {
       _foodSchedules[index] = foodSchedule;
       _foodSchedules = [..._foodSchedules];
-      fbAddFoodSchedule(_user.uid, foodSchedule);
+      if (_user.uid.isNotEmpty) fbAddFoodSchedule(_user.uid, foodSchedule);
     });
   }
 
   void _renameFoodScheduleName(
       int index, FoodSchedule foodSchedule, String oldName) {
     setState(() {
-      fbRemoveFoodSchedule(_user.uid, oldName);
+      if (_user.uid.isNotEmpty) fbRemoveFoodSchedule(_user.uid, oldName);
       _foodscheduleNames.remove(oldName);
       _foodSchedules[index] = foodSchedule;
       _foodSchedules = [..._foodSchedules];
       _foodscheduleNames.add(foodSchedule.name);
-      fbAddFoodSchedule(_user.uid, foodSchedule);
+      if (_user.uid.isNotEmpty) fbAddFoodSchedule(_user.uid, foodSchedule);
     });
   }
 
@@ -120,7 +149,9 @@ class _AppState extends State<App> {
       }
       _foodHistories[dateKey]!.foodSchedule.updateCalories();
       _foodHistories = {..._foodHistories};
-      fbSetFoodHistory(_user.uid, _foodHistories[dateKey]!);
+      if (_user.uid.isNotEmpty) {
+        fbSetFoodHistory(_user.uid, _foodHistories[dateKey]!);
+      }
     });
   }
 
