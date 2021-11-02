@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:dieter/classes/base_page.dart';
 import 'package:dieter/models/food_user.dart';
+import 'package:flutter/material.dart';
 
 class ProfilePage extends BasePage {
   const ProfilePage({Key? key, required this.user, required this.setUser})

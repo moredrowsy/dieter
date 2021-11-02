@@ -1,14 +1,14 @@
-import 'package:dieter/models/food_history.dart';
-import 'package:dieter/routes/history_page.dart';
-import 'package:flutter/material.dart';
 import 'package:dieter/models/food.dart';
+import 'package:dieter/models/food_history.dart';
 import 'package:dieter/models/food_schedule.dart';
-import 'package:dieter/models/food_user.dart';
 import 'package:dieter/routes/food_schedule_page.dart';
+import 'package:dieter/models/food_user.dart';
 import 'package:dieter/routes/foods_page.dart';
+import 'package:dieter/routes/history_page.dart';
 import 'package:dieter/routes/login_page.dart';
 import 'package:dieter/routes/profile_page.dart';
 import 'package:dieter/routes/today_page.dart';
+import 'package:flutter/material.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class BottomNavigator extends StatefulWidget {

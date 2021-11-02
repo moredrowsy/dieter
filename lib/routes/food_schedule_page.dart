@@ -1,8 +1,8 @@
-import 'package:dieter/routes/food_schedule_edit_page.dart';
-import 'package:flutter/material.dart';
 import 'package:dieter/classes/base_page.dart';
 import 'package:dieter/models/food.dart';
 import 'package:dieter/models/food_schedule.dart';
+import 'package:dieter/routes/food_schedule_edit_page.dart';
+import 'package:flutter/material.dart';
 
 class FoodSchedulePage extends BasePage {
   const FoodSchedulePage({

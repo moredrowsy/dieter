@@ -1,10 +1,10 @@
-import 'package:dieter/models/food_history.dart';
-import 'package:dieter/utils/helpers.dart';
-import 'package:flutter/material.dart';
 import 'package:dieter/models/food.dart';
 import 'package:dieter/models/food_schedule.dart';
+import 'package:dieter/models/food_history.dart';
 import 'package:dieter/models/food_user.dart';
 import 'package:dieter/routes/navigator.dart';
+import 'package:dieter/utils/helpers.dart';
+import 'package:flutter/material.dart';
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);

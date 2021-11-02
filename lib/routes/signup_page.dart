@@ -1,11 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:dieter/classes/base_page.dart';
 import 'package:dieter/constants.dart';
 import 'package:dieter/models/food_history.dart';
 import 'package:dieter/models/food_user.dart';
 import 'package:dieter/utils/firebase.dart';
 import 'package:dieter/utils/helpers.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class SignupPage extends BasePage {
   const SignupPage({

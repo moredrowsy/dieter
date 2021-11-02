@@ -1,9 +1,9 @@
-import 'package:dieter/models/food_history.dart';
-import 'package:flutter/material.dart';
 import 'package:dieter/classes/base_page.dart';
 import 'package:dieter/models/food.dart';
+import 'package:dieter/models/food_history.dart';
 import 'package:dieter/models/food_schedule.dart';
 import 'package:dieter/models/food_user.dart';
+import 'package:flutter/material.dart';
 
 class TodayPage extends BasePage {
   const TodayPage({
