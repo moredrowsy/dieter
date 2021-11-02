@@ -7,7 +7,7 @@ part of 'food_schedule.dart';
 // **************************************************************************
 
 FoodSchedule _$FoodScheduleFromJson(Map<String, dynamic> json) => FoodSchedule(
-      name: json['name'] as String? ?? "",
+      name: json['name'] as String? ?? '',
       totalCalories: json['totalCalories'] as int? ?? 0,
       currentCalories: json['currentCalories'] as int? ?? 0,
       breakfast: (json['breakfast'] as List<dynamic>?)

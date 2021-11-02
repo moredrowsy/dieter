@@ -1,3 +1,4 @@
+import 'package:dieter/models/food_history.dart';
 import 'package:flutter/material.dart';
 import 'package:dieter/classes/base_page.dart';
 import 'package:dieter/models/food.dart';
@@ -9,12 +10,12 @@ class TodayPage extends BasePage {
     Key? key,
     required this.user,
     required this.todayDate,
-    required this.foodHistory,
+    required this.foodHistories,
     required this.updateFoodHistory,
   }) : super(key: key, title: "Today");
 
   final FoodUser user;
-  final Map<String, FoodSchedule> foodHistory;
+  final Map<String, FoodHistory> foodHistories;
   final DateTime todayDate;
   final Function updateFoodHistory;
 
@@ -24,6 +25,7 @@ class TodayPage extends BasePage {
 
 class _TodayPageState extends BasePageState<TodayPage> {
   FoodSchedule todayFoodSchedule = FoodSchedule(name: "", totalCalories: 0);
+  double bmr = 0;
 
   void toggleFoodItem(String listType, int index, Food food) {
     food.done = !food.done;
@@ -38,8 +40,9 @@ class _TodayPageState extends BasePageState<TodayPage> {
   @override
   Widget build(BuildContext context) {
     String todayDateString = widget.todayDate.toString().substring(0, 10);
-    if (widget.foodHistory.containsKey(todayDateString)) {
-      todayFoodSchedule = widget.foodHistory[todayDateString] as FoodSchedule;
+    if (widget.foodHistories.containsKey(todayDateString)) {
+      todayFoodSchedule = widget.foodHistories[todayDateString]!.foodSchedule;
+      bmr = widget.foodHistories[todayDateString]!.bmr;
     }
 
     return Scaffold(
@@ -53,37 +56,17 @@ class _TodayPageState extends BasePageState<TodayPage> {
                 const Expanded(
                   child: Center(
                     child: Text(
-                      'Total Calories',
+                      'Calories',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
-                Expanded(
-                  child: Center(
-                    child: Text(todayFoodSchedule.totalCalories.toString(),
-                        style: const TextStyle(fontSize: 18)),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 10),
-            child: Row(
-              children: const [
                 Expanded(
                   child: Center(
                     child: Text(
-                      'Goal',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Center(
-                    child: Text('1300', style: TextStyle(fontSize: 18)),
+                        '${todayFoodSchedule.currentCalories.toString()} / ${todayFoodSchedule.totalCalories.toString()}',
+                        style: const TextStyle(fontSize: 18)),
                   ),
                 ),
               ],
@@ -96,7 +79,7 @@ class _TodayPageState extends BasePageState<TodayPage> {
                 const Expanded(
                   child: Center(
                     child: Text(
-                      'Current Calories',
+                      'BMR',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -104,7 +87,7 @@ class _TodayPageState extends BasePageState<TodayPage> {
                 ),
                 Expanded(
                   child: Center(
-                    child: Text(todayFoodSchedule.currentCalories.toString(),
+                    child: Text(bmr.round().toString(),
                         style: const TextStyle(fontSize: 18)),
                   ),
                 ),

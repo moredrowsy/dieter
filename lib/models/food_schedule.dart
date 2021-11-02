@@ -19,8 +19,13 @@ class FoodSchedule {
     updateCalories();
   }
 
+  @JsonKey(defaultValue: "")
   String name;
+
+  @JsonKey(defaultValue: 0)
   int totalCalories;
+
+  @JsonKey(defaultValue: 0)
   int currentCalories;
 
   @JsonKey(defaultValue: [])

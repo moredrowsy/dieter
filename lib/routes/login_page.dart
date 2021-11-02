@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dieter/models/food.dart';
+import 'package:dieter/models/food_history.dart';
 import 'package:dieter/models/food_schedule.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -15,11 +16,13 @@ class LoginPage extends BasePage {
     required this.setUser,
     required this.setFoods,
     required this.setFoodSchedules,
+    required this.setFoodHistories,
   }) : super(key: key, title: "Login");
 
   final Function setUser;
   final Function setFoods;
   final Function setFoodSchedules;
+  final Function setFoodHistories;
 
   @override
   BasePageState createState() => _LoginPageState();
@@ -64,7 +67,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
           // print(error.toString());
         });
 
-        // Create default foods list
+        // Create default foodSchdules list
         FirebaseDatabase.instance
             .reference()
             .child('foodSchedules/${value.user!.uid}')
@@ -76,6 +79,23 @@ class _LoginPageState extends BasePageState<LoginPage> {
                 jsonDecode(docSnapshot.value[i]).cast<String, dynamic>()));
           }
           widget.setFoodSchedules(foodSchedules);
+        }).catchError((error) {
+          // print(error.toString());
+        });
+
+        // Create default foodSchdules list
+        Map<String, FoodHistory> foodHistories = {};
+        FirebaseDatabase.instance
+            .reference()
+            .child('foodHistories/${value.user!.uid}')
+            .once()
+            .then((docSnapshot) {
+          docSnapshot.value.cast<String, dynamic>().forEach((k, v) {
+            FoodHistory fh =
+                FoodHistory.fromJson(jsonDecode(v).cast<String, dynamic>());
+            foodHistories[fh.dateString] = fh;
+          });
+          widget.setFoodHistories(foodHistories);
         }).catchError((error) {
           // print(error.toString());
         });
@@ -121,6 +141,7 @@ class _LoginPageState extends BasePageState<LoginPage> {
                 setUser: widget.setUser,
                 setFoods: widget.setFoods,
                 setFoodSchedules: widget.setFoodSchedules,
+                setFoodHistories: widget.setFoodHistories,
               )),
     );
   }

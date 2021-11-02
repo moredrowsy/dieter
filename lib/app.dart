@@ -1,5 +1,5 @@
-import 'dart:math';
-
+import 'package:dieter/models/food_history.dart';
+import 'package:dieter/utils/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:dieter/models/food.dart';
 import 'package:dieter/models/food_schedule.dart';
@@ -17,7 +17,7 @@ class _AppState extends State<App> {
   FoodUser _user = FoodUser();
   List<Food> _foods = [];
   List<FoodSchedule> _foodSchedules = [];
-  Map<String, FoodSchedule> _foodHistory = {};
+  Map<String, FoodHistory> _foodHistories = {};
   final DateTime _todayDate = DateTime.now();
 
   void _setUser(FoodUser newUser) {
@@ -65,6 +65,12 @@ class _AppState extends State<App> {
     });
   }
 
+  void _setFoodHistories(Map<String, FoodHistory> foodHistories) {
+    setState(() {
+      _foodHistories = foodHistories;
+    });
+  }
+
   void _updateFoodScheduleItem(int index, FoodSchedule foodSchedule) {
     setState(() {
       _foodSchedules[index] = foodSchedule;
@@ -76,51 +82,20 @@ class _AppState extends State<App> {
       String dateKey, String listType, int index, Food food) {
     setState(() {
       if (listType == "breakfast") {
-        _foodHistory[dateKey]!.breakfast[index] = food;
+        _foodHistories[dateKey]!.foodSchedule.breakfast[index] = food;
       } else if (listType == "lunch") {
-        _foodHistory[dateKey]!.lunch[index] = food;
+        _foodHistories[dateKey]!.foodSchedule.lunch[index] = food;
       } else if (listType == "dinner") {
-        _foodHistory[dateKey]!.dinner[index] = food;
+        _foodHistories[dateKey]!.foodSchedule.dinner[index] = food;
       }
-      _foodHistory[dateKey]!.updateCalories();
-      _foodHistory = {..._foodHistory};
+      _foodHistories[dateKey]!.foodSchedule.updateCalories();
+      _foodHistories = {..._foodHistories};
     });
   }
 
   FoodSchedule _getNewRandomFoodSchedule() {
     if (_foodSchedules.isNotEmpty) {
-      FoodSchedule randFS =
-          _foodSchedules[Random().nextInt(_foodSchedules.length)];
-      FoodSchedule newFoodSchedule = FoodSchedule(
-          name: randFS.name,
-          currentCalories: randFS.currentCalories,
-          totalCalories: randFS.totalCalories);
-
-      for (Food food in randFS.breakfast) {
-        newFoodSchedule.breakfast.add(Food(
-          name: food.name,
-          calories: food.calories,
-          done: food.done,
-        ));
-      }
-      for (Food food in randFS.lunch) {
-        newFoodSchedule.lunch.add(Food(
-          name: food.name,
-          calories: food.calories,
-          done: food.done,
-        ));
-      }
-      for (Food food in randFS.dinner) {
-        newFoodSchedule.dinner.add(Food(
-          name: food.name,
-          calories: food.calories,
-          done: food.done,
-        ));
-      }
-
-      newFoodSchedule.updateCalories();
-
-      return newFoodSchedule;
+      return getNewRandomFoodSchedule(_foodSchedules);
     } else {
       return FoodSchedule(name: "Default");
     }
@@ -128,12 +103,17 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    if (_foodHistory.isEmpty) {
+    if (_foodHistories.isEmpty) {
       if (_foodSchedules.isNotEmpty) {
-        String date = _todayDate.toString().substring(0, 10);
-        if (!_foodHistory.containsKey(date)) {
+        String dateString = _todayDate.toString().substring(0, 10);
+        if (!_foodHistories.containsKey(dateString)) {
           setState(() {
-            _foodHistory[date] = _getNewRandomFoodSchedule();
+            _foodHistories[dateString] = FoodHistory(
+                dateString: dateString,
+                dateTime: _todayDate,
+                foodSchedule: _getNewRandomFoodSchedule(),
+                bmr: _user.bmr,
+                bmi: _user.bmi);
           });
         }
       }
@@ -158,7 +138,8 @@ class _AppState extends State<App> {
         deleteFoodScheduleItem: _deleteFoodScheduleItem,
         updateFoodScheduleItem: _updateFoodScheduleItem,
         todayDate: _todayDate,
-        foodHistory: _foodHistory,
+        foodHistories: _foodHistories,
+        setFoodHistories: _setFoodHistories,
         updateFoodHistory: _updateFoodHistory,
       ),
     );

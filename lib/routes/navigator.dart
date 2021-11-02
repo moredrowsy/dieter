@@ -1,3 +1,4 @@
+import 'package:dieter/models/food_history.dart';
 import 'package:dieter/routes/history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:dieter/models/food.dart';
@@ -26,7 +27,8 @@ class BottomNavigator extends StatefulWidget {
     required this.deleteFoodScheduleItem,
     required this.updateFoodScheduleItem,
     required this.todayDate,
-    required this.foodHistory,
+    required this.foodHistories,
+    required this.setFoodHistories,
     required this.updateFoodHistory,
   }) : super(key: key);
 
@@ -42,8 +44,9 @@ class BottomNavigator extends StatefulWidget {
   final Function addFoodScheduleItem;
   final Function deleteFoodScheduleItem;
   final Function updateFoodScheduleItem;
-  final Map<String, FoodSchedule> foodHistory;
   final DateTime todayDate;
+  final Map<String, FoodHistory> foodHistories;
+  final Function setFoodHistories;
   final Function updateFoodHistory;
 
   @override
@@ -67,7 +70,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
         TodayPage(
             user: widget.user,
             todayDate: widget.todayDate,
-            foodHistory: widget.foodHistory,
+            foodHistories: widget.foodHistories,
             updateFoodHistory: widget.updateFoodHistory),
         FoodSchedulePage(
           foods: widget.foods,
@@ -81,7 +84,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
           addFood: widget.addFood,
           removeFood: widget.removeFood,
         ),
-        HistoryPage(user: widget.user, foodHistory: widget.foodHistory),
+        HistoryPage(user: widget.user, foodHistories: widget.foodHistories),
         ProfilePage(
           user: widget.user,
           setUser: widget.setUser,
@@ -128,6 +131,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
             setUser: widget.setUser,
             setFoods: widget.setFoods,
             setFoodSchedules: widget.setFoodSchedules,
+            setFoodHistories: widget.setFoodHistories,
           ),
         ),
       );

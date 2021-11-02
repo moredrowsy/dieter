@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dieter/models/food_history.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +15,13 @@ class SignupPage extends BasePage {
     required this.setUser,
     required this.setFoods,
     required this.setFoodSchedules,
+    required this.setFoodHistories,
   }) : super(key: key, title: "Signup");
 
   final Function setUser;
   final Function setFoods;
   final Function setFoodSchedules;
+  final Function setFoodHistories;
 
   @override
   BasePageState createState() => _SignupPageState();
@@ -155,11 +158,25 @@ class _SignupPageState extends BasePageState<SignupPage> {
           // print(error.toString());
         });
 
-        // // Create default food history for user
-        // FirebaseDatabase.instance
-        //     .reference()
-        //     .child('foodHistory/${value.user!.uid}')
-        //     .set(jsonEncode({}));
+        // Create default food histories for user
+        Map<String, FoodHistory> foodHistories = {};
+        DateTime dateTime = DateTime.now();
+        String dateString = DateTime.now().toString().substring(0, 10);
+        foodHistories[dateString] = FoodHistory(
+            dateString: dateString,
+            dateTime: dateTime,
+            foodSchedule: getNewRandomFoodSchedule(defaultFoodSchedules),
+            bmr: user.bmr,
+            bmi: user.bmi);
+        FirebaseDatabase.instance
+            .reference()
+            .child('foodHistories/${value.user!.uid}')
+            .set({dateString: jsonEncode(foodHistories[dateString])}).then(
+                (value) {
+          widget.setFoodHistories(foodHistories);
+        }).catchError((error) {
+          // print(error.toString());
+        });
 
         // Create user profile and navigate to back to previous page when done
         FirebaseDatabase.instance

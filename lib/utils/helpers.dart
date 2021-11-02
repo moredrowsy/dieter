@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'package:dieter/models/food.dart';
+import 'package:dieter/models/food_schedule.dart';
+
 double getBMI(double height, double weight) {
   // Calculate BMI
   // https://www.cdc.gov/nccdphp/dnpao/growthcharts/training/bmiage/page5_1.html
@@ -18,4 +21,38 @@ double getBMR(double height, double weight, int age, String sex) {
   }
 
   return bmr;
+}
+
+FoodSchedule getNewRandomFoodSchedule(List<FoodSchedule> foodSchedules) {
+  FoodSchedule randFS = foodSchedules[Random().nextInt(foodSchedules.length)];
+  FoodSchedule newFoodSchedule = FoodSchedule(
+      name: randFS.name,
+      currentCalories: randFS.currentCalories,
+      totalCalories: randFS.totalCalories);
+
+  for (Food food in randFS.breakfast) {
+    newFoodSchedule.breakfast.add(Food(
+      name: food.name,
+      calories: food.calories,
+      done: food.done,
+    ));
+  }
+  for (Food food in randFS.lunch) {
+    newFoodSchedule.lunch.add(Food(
+      name: food.name,
+      calories: food.calories,
+      done: food.done,
+    ));
+  }
+  for (Food food in randFS.dinner) {
+    newFoodSchedule.dinner.add(Food(
+      name: food.name,
+      calories: food.calories,
+      done: food.done,
+    ));
+  }
+
+  newFoodSchedule.updateCalories();
+
+  return newFoodSchedule;
 }

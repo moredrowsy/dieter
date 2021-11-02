@@ -1,3 +1,4 @@
+import 'package:dieter/models/food_history.dart';
 import 'package:flutter/material.dart';
 import 'package:dieter/classes/base_page.dart';
 import 'package:dieter/models/food_schedule.dart';
@@ -7,11 +8,11 @@ class HistoryPage extends BasePage {
   const HistoryPage({
     Key? key,
     required this.user,
-    required this.foodHistory,
+    required this.foodHistories,
   }) : super(key: key, title: "History");
 
   final FoodUser user;
-  final Map<String, FoodSchedule> foodHistory;
+  final Map<String, FoodHistory> foodHistories;
 
   @override
   BasePageState createState() => _HistoryPageState();
@@ -22,8 +23,8 @@ class _HistoryPageState extends BasePageState<HistoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> foodHistoryList = [
-      for (var e in widget.foodHistory.entries) {"date": e.key, "food": e.value}
+    List<FoodHistory> foodHistoriesList = [
+      for (var e in widget.foodHistories.entries) e.value
     ];
 
     return Scaffold(
@@ -77,7 +78,7 @@ class _HistoryPageState extends BasePageState<HistoryPage> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: foodHistoryList.length,
+              itemCount: foodHistoriesList.length,
               itemBuilder: (BuildContext context, int index) {
                 return SizedBox(
                   height: 50,
@@ -91,7 +92,7 @@ class _HistoryPageState extends BasePageState<HistoryPage> {
                           child: Container(
                             alignment: Alignment.centerRight,
                             child: Text(
-                              foodHistoryList[index]["date"],
+                              foodHistoriesList[index].dateString,
                               style: const TextStyle(
                                 decoration: TextDecoration.none,
                                 color: Colors.black,
@@ -105,7 +106,10 @@ class _HistoryPageState extends BasePageState<HistoryPage> {
                             alignment: Alignment.center,
                             margin: const EdgeInsets.only(left: 5, right: 5),
                             child: Text(
-                              foodHistoryList[index]["food"].name.toString(),
+                              foodHistoriesList[index]
+                                  .foodSchedule
+                                  .name
+                                  .toString(),
                               style: const TextStyle(
                                 decoration: TextDecoration.none,
                                 fontStyle: FontStyle.normal,
@@ -119,7 +123,7 @@ class _HistoryPageState extends BasePageState<HistoryPage> {
                           child: Container(
                             alignment: Alignment.centerRight,
                             child: Text(
-                              '${foodHistoryList[index]["food"].currentCalories} / ${foodHistoryList[index]["food"].totalCalories}',
+                              '${foodHistoriesList[index].foodSchedule.currentCalories} / ${foodHistoriesList[index].foodSchedule.totalCalories}',
                               style: const TextStyle(
                                 decoration: TextDecoration.none,
                                 color: Colors.black,
