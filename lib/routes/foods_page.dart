@@ -21,23 +21,66 @@ class FoodsPage extends BasePage {
 }
 
 class _FoodsPageState extends BasePageState<FoodsPage> {
+  String nameErrorString = "";
+  String caloriesErrorString = "";
   final foodNameController = TextEditingController();
   final foodCaloriesController = TextEditingController();
 
   void _addFood() {
-    if (foodNameController.text != "" && foodCaloriesController.text != "") {
-      if (widget.foodNames.contains(foodNameController.text.trim())) {
-        // TODO: Handle dupe name
-      } else {
-        try {
-          int calories =
-              double.parse(foodCaloriesController.text).round().toInt();
-          widget
-              .addFood(Food(name: foodNameController.text, calories: calories));
-        } catch (e) {
-          //
-        }
+    if (foodNameController.text != "" &&
+        foodCaloriesController.text != "" &&
+        nameErrorString.isEmpty &&
+        caloriesErrorString.isEmpty) {
+      try {
+        int calories =
+            double.parse(foodCaloriesController.text).round().toInt();
+        widget.addFood(Food(name: foodNameController.text, calories: calories));
+        foodNameController.text = "";
+        foodCaloriesController.text = "";
+      } catch (e) {
+        //
       }
+    }
+  }
+
+  void validateName(String value) {
+    if (widget.foodNames.contains(foodNameController.text.trim())) {
+      setState(() {
+        nameErrorString = "Duplicate name exists";
+      });
+    } else {
+      setState(() {
+        nameErrorString = "";
+      });
+    }
+  }
+
+  void removeFood(index) {
+    widget.removeFood(index);
+    validateName(foodNameController.text);
+  }
+
+  void validateCalories(value) {
+    if (value.isNotEmpty) {
+      try {
+        if (double.parse(value) < 0) {
+          setState(() {
+            caloriesErrorString = "Positive only";
+          });
+        } else {
+          setState(() {
+            caloriesErrorString = "";
+          });
+        }
+      } catch (e) {
+        setState(() {
+          caloriesErrorString = "Invalid";
+        });
+      }
+    } else {
+      setState(() {
+        caloriesErrorString = "";
+      });
     }
   }
 
@@ -53,46 +96,78 @@ class _FoodsPageState extends BasePageState<FoodsPage> {
                     top: 10, bottom: 0, left: 10, right: 10),
                 child: Row(children: [
                   Expanded(
+                    flex: 7,
                     child: TextField(
                       autofocus: false,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         isCollapsed: true,
-                        contentPadding: EdgeInsets.all(9),
-                        border: OutlineInputBorder(),
-                        labelText: 'Food Name',
+                        contentPadding: const EdgeInsets.all(9),
+                        border: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        focusedBorder: nameErrorString.isEmpty
+                            ? const OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.blue),
+                              )
+                            : const OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red),
+                              ),
+                        labelText: nameErrorString.isEmpty
+                            ? 'Food Name'
+                            : nameErrorString,
+                        labelStyle: nameErrorString.isEmpty
+                            ? const TextStyle(color: Colors.blue)
+                            : const TextStyle(color: Colors.red),
                       ),
                       controller: foodNameController,
+                      onChanged: validateName,
                     ),
-                    flex: 7,
                   ),
                   Expanded(
+                    flex: 3,
                     child: Container(
                       margin: const EdgeInsets.only(
                         left: 10,
                       ),
                       child: TextField(
                         autofocus: false,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           isCollapsed: true,
-                          contentPadding: EdgeInsets.all(9),
-                          border: OutlineInputBorder(),
-                          labelText: 'Calories',
+                          contentPadding: const EdgeInsets.all(9),
+                          border: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue),
+                          ),
+                          focusedBorder: caloriesErrorString.isEmpty
+                              ? const OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.blue),
+                                )
+                              : const OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.red),
+                                ),
+                          labelText: caloriesErrorString.isEmpty
+                              ? 'Calories'
+                              : caloriesErrorString,
+                          labelStyle: caloriesErrorString.isEmpty
+                              ? const TextStyle(color: Colors.blue)
+                              : const TextStyle(color: Colors.red),
                         ),
                         controller: foodCaloriesController,
+                        keyboardType: TextInputType.number,
+                        onChanged: validateCalories,
                       ),
                     ),
-                    flex: 3,
                   ),
                   Expanded(
-                      child: Container(
-                        child: IconButton(
-                          icon: const Icon(Icons.add),
-                          color: Colors.blue,
-                          onPressed: _addFood,
-                        ),
-                        alignment: Alignment.centerRight,
+                    flex: 1,
+                    child: Container(
+                      child: IconButton(
+                        icon: const Icon(Icons.add),
+                        color: Colors.blue,
+                        onPressed: _addFood,
                       ),
-                      flex: 1)
+                      alignment: Alignment.centerRight,
+                    ),
+                  ),
                 ]),
               ),
               ListView.builder(
@@ -121,7 +196,7 @@ class _FoodsPageState extends BasePageState<FoodsPage> {
                                 icon: const Icon(Icons.delete),
                                 color: Colors.blue,
                                 onPressed: () {
-                                  widget.removeFood(index);
+                                  removeFood(index);
                                 },
                               ),
                               alignment: Alignment.centerRight,

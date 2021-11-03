@@ -29,6 +29,7 @@ class FoodSchedulePage extends BasePage {
 }
 
 class _FoodSchedulePageState extends BasePageState<FoodSchedulePage> {
+  String errorString = "";
   final ButtonStyle style =
       ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
   final newFoodScheduleNameController = TextEditingController();
@@ -50,20 +51,29 @@ class _FoodSchedulePageState extends BasePageState<FoodSchedulePage> {
   }
 
   void addFoodSchedule() {
-    if (newFoodScheduleNameController.text.isNotEmpty) {
-      if (widget.foodscheduleNames
-          .contains(newFoodScheduleNameController.text.trim())) {
-        // TODO: Handle dupe name
-      } else {
-        widget.addFoodScheduleItem(
-            FoodSchedule(name: newFoodScheduleNameController.text));
-        newFoodScheduleNameController.text = "";
-      }
+    if (errorString.isEmpty) {
+      widget.addFoodScheduleItem(
+          FoodSchedule(name: newFoodScheduleNameController.text));
+      newFoodScheduleNameController.text = "";
+    }
+  }
+
+  void validateName(String value) {
+    if (widget.foodscheduleNames
+        .contains(newFoodScheduleNameController.text.trim())) {
+      setState(() {
+        errorString = "Duplicate name exists";
+      });
+    } else {
+      setState(() {
+        errorString = "";
+      });
     }
   }
 
   void deleteFoodSchedule(int index) {
     widget.deleteFoodScheduleItem(index);
+    validateName(newFoodScheduleNameController.text);
   }
 
   @override
@@ -81,14 +91,29 @@ class _FoodSchedulePageState extends BasePageState<FoodSchedulePage> {
                   child: TextField(
                     autofocus: false,
                     controller: newFoodScheduleNameController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       isCollapsed: true,
-                      contentPadding: EdgeInsets.all(9),
-                      border: OutlineInputBorder(),
-                      labelText: 'New Food Schedule Name',
+                      contentPadding: const EdgeInsets.all(9),
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      focusedBorder: errorString.isEmpty
+                          ? const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            )
+                          : const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red),
+                            ),
+                      labelText: errorString.isEmpty
+                          ? 'Food Schedule Name'
+                          : errorString,
+                      labelStyle: errorString.isEmpty
+                          ? const TextStyle(color: Colors.blue)
+                          : const TextStyle(color: Colors.red),
                     ),
                     keyboardType: TextInputType.name,
                     obscureText: false,
+                    onChanged: validateName,
                   ),
                 ),
                 Expanded(

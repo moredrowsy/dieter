@@ -15,9 +15,9 @@ class ProfilePage extends BasePage {
 
 class _ProfilePageState extends BasePageState<ProfilePage> {
   bool isEdit = false;
+  String errorString = "";
   final heightController = TextEditingController();
   final weightController = TextEditingController();
-  final sexController = TextEditingController();
   final ageController = TextEditingController();
   final ButtonStyle style =
       ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
@@ -28,26 +28,64 @@ class _ProfilePageState extends BasePageState<ProfilePage> {
     });
   }
 
-  void _saveProfile() {
+  void _cancelEdit() {
+    _resetFields();
     _toggleEdit();
-    widget.user.height = double.parse(heightController.text);
-    widget.user.weight = double.parse(weightController.text);
-    widget.user.age = int.parse(ageController.text);
-    widget.user.updateBMIAndBMR();
+    setState(() {
+      errorString = "";
+    });
+  }
 
-    widget.setUser(widget.user);
+  void _saveProfile() {
+    if (errorString.isEmpty) {
+      _toggleEdit();
+      widget.user.height = double.parse(heightController.text);
+      widget.user.weight = double.parse(weightController.text);
+      widget.user.age = int.parse(ageController.text);
+      widget.user.updateBMIAndBMR();
+      widget.setUser(widget.user);
+    }
   }
 
   void _logout() {
     widget.setUser(FoodUser());
   }
 
-  @override
-  Widget build(BuildContext context) {
+  void _validateNumberInput(value) {
+    if (value.isEmpty) {
+      setState(() {
+        errorString = "Can not be empty";
+      });
+    } else {
+      try {
+        if (double.parse(value) < 1) {
+          setState(() {
+            errorString = "Age must be positive";
+          });
+        } else {
+          setState(() {
+            errorString = "";
+          });
+        }
+      } catch (e) {
+        setState(() {
+          errorString = "Invalid number";
+        });
+      }
+    }
+  }
+
+  void _resetFields() {
     heightController.text = widget.user.height.toString();
     weightController.text = widget.user.weight.toString();
-    sexController.text = widget.user.sex;
     ageController.text = widget.user.age.toString();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!isEdit) {
+      _resetFields();
+    }
 
     return Scaffold(
       body: SafeArea(
@@ -57,7 +95,18 @@ class _ProfilePageState extends BasePageState<ProfilePage> {
             child: Column(
               children: <Widget>[
                 Container(
-                  margin: const EdgeInsets.only(top: 20),
+                  margin: const EdgeInsets.only(top: 5),
+                  child: Center(
+                    child: errorString.isEmpty
+                        ? const Text("")
+                        : Text(
+                            errorString,
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 10),
                   child: Row(
                     children: [
                       const Expanded(
@@ -144,8 +193,9 @@ class _ProfilePageState extends BasePageState<ProfilePage> {
                                     ),
                                     contentPadding: EdgeInsets.all(5),
                                   ),
-                                  keyboardType: TextInputType.emailAddress,
+                                  keyboardType: TextInputType.number,
                                   obscureText: false,
+                                  onChanged: _validateNumberInput,
                                 )
                               : Container(
                                   margin: const EdgeInsets.only(
@@ -192,8 +242,9 @@ class _ProfilePageState extends BasePageState<ProfilePage> {
                                     ),
                                     contentPadding: EdgeInsets.all(5),
                                   ),
-                                  keyboardType: TextInputType.emailAddress,
+                                  keyboardType: TextInputType.number,
                                   obscureText: false,
+                                  onChanged: _validateNumberInput,
                                 )
                               : Container(
                                   margin: const EdgeInsets.only(
@@ -215,7 +266,7 @@ class _ProfilePageState extends BasePageState<ProfilePage> {
                       const Expanded(
                         child: Center(
                           child: Text(
-                            'Weight (lbs.)',
+                            'Age',
                             style: TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.bold),
                           ),
@@ -240,8 +291,9 @@ class _ProfilePageState extends BasePageState<ProfilePage> {
                                     ),
                                     contentPadding: EdgeInsets.all(5),
                                   ),
-                                  keyboardType: TextInputType.emailAddress,
+                                  keyboardType: TextInputType.number,
                                   obscureText: false,
+                                  onChanged: _validateNumberInput,
                                 )
                               : Container(
                                   margin: const EdgeInsets.only(
@@ -342,10 +394,23 @@ class _ProfilePageState extends BasePageState<ProfilePage> {
                 ),
                 const SizedBox(height: 15),
                 isEdit
-                    ? ElevatedButton(
-                        style: style,
-                        onPressed: _saveProfile,
-                        child: const Text('Save'),
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(right: 5),
+                            child: ElevatedButton(
+                              style: style,
+                              onPressed: _saveProfile,
+                              child: const Text('Save'),
+                            ),
+                          ),
+                          ElevatedButton(
+                            style: style,
+                            onPressed: _cancelEdit,
+                            child: const Text('X'),
+                          ),
+                        ],
                       )
                     : ElevatedButton(
                         style: style,
