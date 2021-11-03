@@ -24,11 +24,13 @@ class _AppState extends State<App> {
   final DateTime _todayDate = DateTime.now();
 
   void _setUser(FoodUser newUser, [bool fbSet = true]) {
-    if (!newUser.isEmptyUser() && fbSet) {
-      fbSetUser(newUser);
-    }
-
     setState(() {
+      String dateString = _todayDate.toString().substring(0, 10);
+      if (_foodHistories.containsKey(dateString)) {
+        _foodHistories[dateString]!.bmi = newUser.bmi;
+        _foodHistories[dateString]!.bmr = newUser.bmr;
+      }
+
       _user = FoodUser(
           uid: newUser.uid,
           username: newUser.username,
@@ -39,6 +41,11 @@ class _AppState extends State<App> {
           age: newUser.age,
           bmi: newUser.bmi,
           bmr: newUser.bmr);
+
+      if (!_user.isEmptyUser() && fbSet) {
+        fbSetUser(_user);
+        fbSetFoodHistory(_user.uid, _foodHistories[dateString]!);
+      }
     });
   }
 
