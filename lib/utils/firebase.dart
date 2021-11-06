@@ -4,6 +4,7 @@ import 'package:dieter/models/food.dart';
 import 'package:dieter/models/food_history.dart';
 import 'package:dieter/models/food_schedule.dart';
 import 'package:dieter/models/food_user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 void fbHydrateFoods(String uid, Function callback) {
@@ -189,4 +190,21 @@ void fbSetUser(FoodUser user, [Function? callback]) {
   }).catchError((error) {
     // print(error.toString());
   });
+}
+
+void fbHydrateApp(User user, Function setFoods, Function setFoodSchedules,
+    Function setFoodHistories, Function setUser) {
+  String uid = user.uid;
+
+  // Load user foods list
+  fbHydrateFoods(uid, setFoods);
+
+  // Load user foodSchdules list
+  fbfbHydrateFoodschedules(uid, setFoodSchedules);
+
+  // Load user foodHistories list
+  fbHydrateFoodHistories(uid, setFoodHistories);
+
+  // Load user profile
+  fbHydrateUser(uid, setUser);
 }

@@ -1,5 +1,6 @@
 import 'package:dieter/classes/base_page.dart';
 import 'package:dieter/models/food_user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends BasePage {
@@ -48,7 +49,7 @@ class _ProfilePageState extends BasePageState<ProfilePage> {
   }
 
   void _logout() {
-    widget.setUser(FoodUser());
+    FirebaseAuth.instance.signOut();
   }
 
   void _validateNumberInput(value) {

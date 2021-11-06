@@ -1,6 +1,5 @@
 import 'package:dieter/classes/base_page.dart';
 import 'package:dieter/routes/signup_page.dart';
-import 'package:dieter/utils/firebase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -45,21 +44,8 @@ class _LoginPageState extends BasePageState<LoginPage> {
       FirebaseAuth.instance
           .signInWithEmailAndPassword(
               email: emailController.text, password: passController.text)
-          .then((value) {
-        String uid = value.user!.uid;
-
-        // Load user foods list
-        fbHydrateFoods(uid, widget.setFoods);
-
-        // Load user foodSchdules list
-        fbfbHydrateFoodschedules(uid, widget.setFoodSchedules);
-
-        // Load user foodHistories list
-        fbHydrateFoodHistories(uid, widget.setFoodHistories);
-
-        // Load user profile
-        fbHydrateUser(uid, widget.setUser);
-      }).catchError((error) {
+          .then((value) {})
+          .catchError((error) {
         setState(() {
           if (error.code == 'user-not-found') {
             errorString = "User does not exist";

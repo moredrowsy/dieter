@@ -5,6 +5,7 @@ import 'package:dieter/models/food_user.dart';
 import 'package:dieter/routes/navigator.dart';
 import 'package:dieter/utils/firebase.dart';
 import 'package:dieter/utils/helpers.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatefulWidget {
@@ -17,9 +18,9 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   FoodUser _user = FoodUser();
   List<Food> _foods = [];
-  final Set<String> _foodNames = {};
+  Set<String> _foodNames = {};
   List<FoodSchedule> _foodSchedules = [];
-  final Set<String> _foodscheduleNames = {};
+  Set<String> _foodscheduleNames = {};
   Map<String, FoodHistory> _foodHistories = {};
   final DateTime _todayDate = DateTime.now();
 
@@ -113,6 +114,16 @@ class _AppState extends State<App> {
     });
   }
 
+  void _setFoodHistory(FoodHistory foodHistory, [bool fbSet = true]) {
+    if (!_user.isEmptyUser() && fbSet) {
+      fbSetFoodHistory(_user.uid, foodHistory);
+    }
+
+    setState(() {
+      _foodHistories[foodHistory.dateString] = foodHistory;
+    });
+  }
+
   void _setFoodHistories(Map<String, FoodHistory> foodHistories,
       [bool fbSet = true]) {
     if (!_user.isEmptyUser() && fbSet) {
@@ -172,19 +183,34 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    if (_foodHistories.isEmpty) {
-      if (_foodSchedules.isNotEmpty) {
-        String dateString = _todayDate.toString().substring(0, 10);
-        if (!_foodHistories.containsKey(dateString)) {
+    if (_user.isEmptyUser()) {
+      FirebaseAuth.instance.authStateChanges().listen((user) {
+        if (user == null) {
           setState(() {
-            _foodHistories[dateString] = FoodHistory(
-                dateString: dateString,
-                dateTime: _todayDate,
-                foodSchedule: _getNewRandomFoodSchedule(),
-                bmr: _user.bmr,
-                bmi: _user.bmi);
+            _user = FoodUser();
+            _foods = [];
+            _foodNames = {};
+            _foodSchedules = [];
+            _foodscheduleNames = {};
+            _foodHistories = {};
           });
+        } else {
+          fbHydrateApp(
+              user, _setFoods, _setFoodSchedules, _setFoodHistories, _setUser);
         }
+      });
+    }
+
+    if (_foodSchedules.isNotEmpty) {
+      String dateString = _todayDate.toString().substring(0, 10);
+      if (!_foodHistories.containsKey(dateString)) {
+        FoodHistory fh = FoodHistory(
+            dateString: dateString,
+            dateTime: _todayDate,
+            foodSchedule: _getNewRandomFoodSchedule(),
+            bmr: _user.bmr,
+            bmi: _user.bmi);
+        _setFoodHistory(fh);
       }
     }
 
