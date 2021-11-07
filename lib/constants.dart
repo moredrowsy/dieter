@@ -30,8 +30,8 @@ List<Food> defaultFoods = [
   Food(name: 'Chick-fil-A Chicken Sandwich', calories: 440),
   Food(name: 'McDonald Quarter Pounder with Cheese', calories: 520),
   Food(name: 'McDonald Bacon, Egg, & Cheese', calories: 460),
-  Food(name: 'In-N-Out Hamburger w/ Onion', calories: 243),
-  Food(name: 'In-N-Out Double Double w/ Onion', calories: 330),
+  Food(name: 'In-N-Out Hamburger with Onion', calories: 243),
+  Food(name: 'In-N-Out Double Double with Onion', calories: 330),
 
   // Sandiwches
   Food(name: 'Halal Guys Beef Gyro Sandwich', calories: 278),
@@ -63,12 +63,13 @@ FoodSchedule fs1 =
   defaultFoodsMap['Oatmeal']!,
   defaultFoodsMap['Milk']!,
 ], lunch: [
-  defaultFoodsMap['In-N-Out Hamburger w/ Onion']!,
+  defaultFoodsMap['In-N-Out Hamburger with Onion']!,
   defaultFoodsMap['Gatorade']!,
 ], dinner: [
   defaultFoodsMap['Yoshinoya Original Beef Reg Bowl']!,
   defaultFoodsMap['Green Tea and Lemon']!,
 ]);
+
 FoodSchedule fs2 = FoodSchedule(
     name: 'Minestrone Soup, Halal Guys Sandwich, Chicken Bowl',
     breakfast: [
@@ -83,6 +84,7 @@ FoodSchedule fs2 = FoodSchedule(
       defaultFoodsMap['Yoshinoya Orange Chicken Reg Bowl']!,
       defaultFoodsMap['Green Tea and Lemon']!,
     ]);
+
 FoodSchedule fs3 =
     FoodSchedule(name: 'Fruits, Chicken Sub, Chicken Bowl', breakfast: [
   defaultFoodsMap['Apple']!,
@@ -95,6 +97,7 @@ FoodSchedule fs3 =
   defaultFoodsMap['Yoshinoya Grilled Teriyaki Chicken Reg Bowl']!,
   defaultFoodsMap['Milk']!,
 ]);
+
 FoodSchedule fs4 = FoodSchedule(
     name: 'Veggie Soup, In-N-Out Burger, American Sub',
     breakfast: [
@@ -102,13 +105,14 @@ FoodSchedule fs4 = FoodSchedule(
       defaultFoodsMap['Green Tea and Lemon']!,
     ],
     lunch: [
-      defaultFoodsMap['In-N-Out Hamburger w/ Onion']!,
+      defaultFoodsMap['In-N-Out Hamburger with Onion']!,
       defaultFoodsMap['Gatorade']!,
     ],
     dinner: [
       defaultFoodsMap['Subway All-American CLub']!,
       defaultFoodsMap['Green Tea and Lemon']!,
     ]);
+
 FoodSchedule fs5 = FoodSchedule(
     name: 'Salad, Halal Guys Combo, Steak and Broccoli',
     breakfast: [
