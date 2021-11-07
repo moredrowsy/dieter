@@ -80,9 +80,6 @@ class _LoginPageState extends BasePageState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    emailController.text = "thuantang@gmail.com";
-    passController.text = "123456";
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),

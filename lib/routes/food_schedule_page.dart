@@ -135,7 +135,7 @@ class _FoodSchedulePageState extends BasePageState<FoodSchedulePage> {
               itemCount: widget.foodSchedules.length,
               itemBuilder: (BuildContext context, int index) {
                 return SizedBox(
-                    height: 50,
+                    height: 60,
                     // child: Center(child: Text('Entry ${dinner[index]['name']}')),
                     child: Container(
                       margin: const EdgeInsets.only(
@@ -147,6 +147,7 @@ class _FoodSchedulePageState extends BasePageState<FoodSchedulePage> {
                             child: Center(
                                 child: Text(
                               '${widget.foodSchedules[index].totalCalories}',
+                              textAlign: TextAlign.center,
                             )),
                           ),
                           Expanded(
@@ -154,6 +155,7 @@ class _FoodSchedulePageState extends BasePageState<FoodSchedulePage> {
                             child: Center(
                                 child: Text(
                               widget.foodSchedules[index].name,
+                              textAlign: TextAlign.center,
                             )),
                           ),
                           Expanded(

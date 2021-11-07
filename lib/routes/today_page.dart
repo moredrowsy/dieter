@@ -103,7 +103,7 @@ class _TodayPageState extends BasePageState<TodayPage> {
               itemCount: todayFoodSchedule.breakfast.length,
               itemBuilder: (BuildContext context, int index) {
                 return SizedBox(
-                  height: 50,
+                  height: 60,
                   child: Container(
                     margin: const EdgeInsets.only(top: 10),
                     child: Row(
@@ -113,6 +113,7 @@ class _TodayPageState extends BasePageState<TodayPage> {
                             child: Text(
                               todayFoodSchedule.breakfast[index].calories
                                   .toString(),
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 decoration:
                                     todayFoodSchedule.breakfast[index].done
@@ -130,6 +131,7 @@ class _TodayPageState extends BasePageState<TodayPage> {
                           child: Center(
                             child: Text(
                               todayFoodSchedule.breakfast[index].name,
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 decoration:
                                     todayFoodSchedule.breakfast[index].done
@@ -174,7 +176,7 @@ class _TodayPageState extends BasePageState<TodayPage> {
               itemCount: todayFoodSchedule.lunch.length,
               itemBuilder: (BuildContext context, int index) {
                 return SizedBox(
-                  height: 50,
+                  height: 60,
                   child: Container(
                     margin: const EdgeInsets.only(top: 10),
                     child: Row(
@@ -184,6 +186,7 @@ class _TodayPageState extends BasePageState<TodayPage> {
                             child: Text(
                               todayFoodSchedule.lunch[index].calories
                                   .toString(),
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 decoration: todayFoodSchedule.lunch[index].done
                                     ? TextDecoration.lineThrough
@@ -200,6 +203,7 @@ class _TodayPageState extends BasePageState<TodayPage> {
                           child: Center(
                             child: Text(
                               todayFoodSchedule.lunch[index].name,
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 decoration: todayFoodSchedule.lunch[index].done
                                     ? TextDecoration.lineThrough
@@ -243,7 +247,7 @@ class _TodayPageState extends BasePageState<TodayPage> {
               itemCount: todayFoodSchedule.dinner.length,
               itemBuilder: (BuildContext context, int index) {
                 return SizedBox(
-                  height: 50,
+                  height: 60,
                   child: Container(
                     margin: const EdgeInsets.only(top: 10),
                     child: Row(
@@ -253,6 +257,7 @@ class _TodayPageState extends BasePageState<TodayPage> {
                             child: Text(
                               todayFoodSchedule.dinner[index].calories
                                   .toString(),
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 decoration: todayFoodSchedule.dinner[index].done
                                     ? TextDecoration.lineThrough
@@ -269,6 +274,7 @@ class _TodayPageState extends BasePageState<TodayPage> {
                           child: Center(
                             child: Text(
                               todayFoodSchedule.dinner[index].name,
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 decoration: todayFoodSchedule.dinner[index].done
                                     ? TextDecoration.lineThrough
