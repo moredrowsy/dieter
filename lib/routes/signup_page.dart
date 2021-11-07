@@ -160,14 +160,6 @@ class _SignupPageState extends BasePageState<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    usernameController.text = "thuan";
-    passController.text = "123456";
-    emailController.text = "thuantang@gmail.com";
-    heightController.text = "64";
-    weightController.text = "140";
-    sexController.text = "male";
-    ageController.text = "25";
-
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
