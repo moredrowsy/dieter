@@ -84,52 +84,70 @@ class _LoginPageState extends BasePageState<LoginPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            Container(
-              margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
-              child: Text(errorString),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
-              child: TextField(
-                autofocus: true,
-                controller: emailController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Email',
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              Container(
+                margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
+                child: const Text(
+                  "DIETER",
+                  style: TextStyle(
+                      fontSize: 25,
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold),
                 ),
-                keyboardType: TextInputType.name,
-                obscureText: false,
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
-              child: TextField(
-                autofocus: true,
-                controller: passController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
+              Container(
+                margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
+                child: const Image(
+                    image: ResizeImage(AssetImage('assets/icons/food.png'),
+                        width: 50)),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 0, left: 20, right: 20),
+                child: Text(errorString),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
+                child: TextField(
+                  autofocus: true,
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Email',
+                  ),
+                  keyboardType: TextInputType.name,
+                  obscureText: false,
                 ),
-                keyboardType: TextInputType.text,
-                obscureText: true,
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(
-                  top: 20, bottom: 15, left: 20, right: 20),
-              child: OutlinedButton(
-                onPressed: _login,
-                child: const Text('Log in'),
+              Container(
+                margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
+                child: TextField(
+                  autofocus: true,
+                  controller: passController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Password',
+                  ),
+                  keyboardType: TextInputType.text,
+                  obscureText: true,
+                ),
               ),
-            ),
-            OutlinedButton(
-              onPressed: _gotoSignup,
-              child: const Text('Sign up'),
-            ),
-          ],
+              Container(
+                margin: const EdgeInsets.only(
+                    top: 20, bottom: 15, left: 20, right: 20),
+                child: OutlinedButton(
+                  onPressed: _login,
+                  child: const Text('Log in'),
+                ),
+              ),
+              OutlinedButton(
+                onPressed: _gotoSignup,
+                child: const Text('Sign up'),
+              ),
+            ],
+          ),
         ),
       ),
     );
