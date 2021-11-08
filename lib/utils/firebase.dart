@@ -208,3 +208,51 @@ void fbHydrateApp(User user, Function setFoods, Function setFoodSchedules,
   // Load user profile
   fbHydrateUser(uid, setUser);
 }
+
+Future<void> fbRemoveUserAccount(User user, Function reAuth,
+    [Function? callback]) async {
+  String uid = user.uid;
+
+  FirebaseDatabase.instance
+      .reference()
+      .child('foodHistories/' + uid)
+      .remove()
+      .then((value) {})
+      .catchError((error) {
+    // print(error.toString());
+  });
+  FirebaseDatabase.instance
+      .reference()
+      .child('foodSchedules/' + uid)
+      .remove()
+      .then((value) {})
+      .catchError((error) {
+    // print(error.toString());
+  });
+  FirebaseDatabase.instance
+      .reference()
+      .child('foods/' + uid)
+      .remove()
+      .then((value) {})
+      .catchError((error) {
+    // print(error.toString());
+  });
+  FirebaseDatabase.instance
+      .reference()
+      .child('users/' + uid)
+      .remove()
+      .then((value) {})
+      .catchError((error) {
+    // print(error.toString());
+  });
+
+  try {
+    await user.delete();
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'requires-recent-login') {
+      reAuth();
+    }
+  }
+
+  callback!();
+}

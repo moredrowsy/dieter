@@ -1,14 +1,25 @@
 import 'package:dieter/classes/base_page.dart';
 import 'package:dieter/models/food_user.dart';
+import 'package:dieter/routes/login_page.dart';
+import 'package:dieter/utils/firebase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends BasePage {
-  const ProfilePage({Key? key, required this.user, required this.setUser})
+  const ProfilePage(
+      {Key? key,
+      required this.user,
+      required this.setUser,
+      required this.setFoods,
+      required this.setFoodSchedules,
+      required this.setFoodHistories})
       : super(key: key, title: "Profile");
 
   final FoodUser user;
   final Function setUser;
+  final Function setFoods;
+  final Function setFoodSchedules;
+  final Function setFoodHistories;
 
   @override
   BasePageState createState() => _ProfilePageState();
@@ -80,6 +91,23 @@ class _ProfilePageState extends BasePageState<ProfilePage> {
     heightController.text = widget.user.height.toString();
     weightController.text = widget.user.weight.toString();
     ageController.text = widget.user.age.toString();
+  }
+
+  Future<void> _removeUser() async {
+    User firebaseUser = FirebaseAuth.instance.currentUser!;
+    fbRemoveUserAccount(firebaseUser, () {
+      // Go to login page to reauth
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => LoginPage(
+                  setUser: widget.setUser,
+                  setFoods: widget.setFoods,
+                  setFoodSchedules: widget.setFoodSchedules,
+                  setFoodHistories: widget.setFoodHistories,
+                )),
+      );
+    });
   }
 
   @override
@@ -423,6 +451,12 @@ class _ProfilePageState extends BasePageState<ProfilePage> {
                   style: style,
                   onPressed: _logout,
                   child: const Text('Log out'),
+                ),
+                const SizedBox(height: 55),
+                ElevatedButton(
+                  style: style,
+                  onPressed: _removeUser,
+                  child: const Text('Remove Account'),
                 ),
               ],
             ),

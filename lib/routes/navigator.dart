@@ -97,6 +97,9 @@ class _BottomNavigatorState extends State<BottomNavigator> {
         ProfilePage(
           user: widget.user,
           setUser: widget.setUser,
+          setFoods: widget.setFoods,
+          setFoodSchedules: widget.setFoodSchedules,
+          setFoodHistories: widget.setFoodHistories,
         ),
       ];
 
