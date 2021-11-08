@@ -215,6 +215,7 @@ class _AppState extends State<App> {
     }
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Dieter',
       theme: ThemeData(
         primarySwatch: Colors.blue,
