@@ -221,7 +221,7 @@ class _FoodScheduleEditPageState extends BasePageState<FoodScheduleEditPage> {
                   .foodSchedules[widget.foodScheduleIndex].breakfast.length,
               itemBuilder: (BuildContext context, int index) {
                 return SizedBox(
-                    height: 50,
+                    height: 60,
                     // child: Center(child: Text('Entry ${dinner[index]['name']}')),
                     child: Container(
                       margin: const EdgeInsets.only(top: 10, bottom: 20),
@@ -231,6 +231,7 @@ class _FoodScheduleEditPageState extends BasePageState<FoodScheduleEditPage> {
                             child: Center(
                                 child: Text(
                               '${widget.foodSchedules[widget.foodScheduleIndex].breakfast[index].calories}',
+                              textAlign: TextAlign.center,
                             )),
                           ),
                           Expanded(
@@ -238,6 +239,7 @@ class _FoodScheduleEditPageState extends BasePageState<FoodScheduleEditPage> {
                                 child: Text(
                               widget.foodSchedules[widget.foodScheduleIndex]
                                   .breakfast[index].name,
+                              textAlign: TextAlign.center,
                             )),
                           ),
                           Expanded(
@@ -264,7 +266,7 @@ class _FoodScheduleEditPageState extends BasePageState<FoodScheduleEditPage> {
                   widget.foodSchedules[widget.foodScheduleIndex].lunch.length,
               itemBuilder: (BuildContext context, int index) {
                 return SizedBox(
-                    height: 50,
+                    height: 60,
                     // child: Center(child: Text('Entry ${dinner[index]['name']}')),
                     child: Container(
                       margin: const EdgeInsets.only(top: 10, bottom: 20),
@@ -274,6 +276,7 @@ class _FoodScheduleEditPageState extends BasePageState<FoodScheduleEditPage> {
                             child: Center(
                                 child: Text(
                               '${widget.foodSchedules[widget.foodScheduleIndex].lunch[index].calories}',
+                              textAlign: TextAlign.center,
                             )),
                           ),
                           Expanded(
@@ -281,6 +284,7 @@ class _FoodScheduleEditPageState extends BasePageState<FoodScheduleEditPage> {
                                 child: Text(
                               widget.foodSchedules[widget.foodScheduleIndex]
                                   .lunch[index].name,
+                              textAlign: TextAlign.center,
                             )),
                           ),
                           Expanded(
@@ -307,7 +311,7 @@ class _FoodScheduleEditPageState extends BasePageState<FoodScheduleEditPage> {
                   widget.foodSchedules[widget.foodScheduleIndex].dinner.length,
               itemBuilder: (BuildContext context, int index) {
                 return SizedBox(
-                    height: 50,
+                    height: 60,
                     // child: Center(child: Text('Entry ${dinner[index]['name']}')),
                     child: Container(
                       margin: const EdgeInsets.only(top: 10, bottom: 20),
@@ -317,6 +321,7 @@ class _FoodScheduleEditPageState extends BasePageState<FoodScheduleEditPage> {
                             child: Center(
                                 child: Text(
                               '${widget.foodSchedules[widget.foodScheduleIndex].dinner[index].calories}',
+                              textAlign: TextAlign.center,
                             )),
                           ),
                           Expanded(
@@ -324,6 +329,7 @@ class _FoodScheduleEditPageState extends BasePageState<FoodScheduleEditPage> {
                                 child: Text(
                               widget.foodSchedules[widget.foodScheduleIndex]
                                   .dinner[index].name,
+                              textAlign: TextAlign.center,
                             )),
                           ),
                           Expanded(
